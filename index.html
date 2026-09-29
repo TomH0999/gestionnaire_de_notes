@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>BUT1 Informatique - Gestionnaire de Notes</title>
+
+    <!-- iOS & PWA Meta Tags -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Notes BUT1">
+    <meta name="theme-color" content="#0f172a">
+    <link rel="apple-touch-icon" href="icon.svg">
+    <link rel="icon" type="image/svg+xml" href="icon.svg">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        slate: {
+                            850: '#1e293b',
+                            900: '#0f172a',
+                            950: '#020617'
+                        },
+                        brand: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- FontAwesome & Google Fonts (Inter) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col antialiased">
+
+    <!-- Navigation / En-tête -->
+    <header class="bg-slate-900 border-b border-slate-800 sticky top-0 z-30 shadow-md backdrop-blur-md bg-opacity-90">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-brand-600 flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-brand-600/30">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg tracking-tight text-white leading-tight">BUT1 Informatique</h1>
+                    <p class="text-xs text-slate-400">Gestionnaire de Notes & Moyennes</p>
+                </div>
+            </div>
+
+            <!-- Actions globales -->
+            <div class="flex items-center space-x-2">
+                <button id="export-btn" onclick="exportData()" class="p-2 sm:px-3 sm:py-1.5 text-xs sm:text-sm font-medium bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg transition border border-slate-700 flex items-center gap-2" title="Exporter les données (JSON)">
+                    <i class="fa-solid fa-download text-brand-500"></i>
+                    <span class="hidden sm:inline">Exporter</span>
+                </button>
+                <label for="import-file" class="p-2 sm:px-3 sm:py-1.5 text-xs sm:text-sm font-medium bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg transition border border-slate-700 cursor-pointer flex items-center gap-2" title="Importer des données (JSON)">
+                    <i class="fa-solid fa-upload text-brand-500"></i>
+                    <span class="hidden sm:inline">Importer</span>
+                </label>
+                <input type="file" id="import-file" accept=".json" class="hidden" onchange="importData(event)">
+                
+                <button onclick="confirmReset()" class="p-2 text-xs sm:text-sm font-medium bg-red-500/10 hover:bg-red-500/20 text-red-400 rounded-lg transition border border-red-500/20" title="Réinitialiser toutes les données">
+                    <i class="fa-solid fa-trash-can"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+        <!-- Tableau de bord supérieur -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            <!-- Carte Moyenne Générale -->
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl relative overflow-hidden flex flex-col justify-between">
+                <div class="absolute -right-6 -top-6 w-32 h-32 bg-brand-600/10 rounded-full blur-2xl pointer-events-none"></div>
+                <div>
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Moyenne Générale</span>
+                        <span id="sem-badge" class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-brand-500/10 text-brand-400 border border-brand-500/20">Semestre 1</span>
+                    </div>
+                    <div class="flex items-baseline space-x-3 my-4">
+                        <span id="overall-average" class="text-5xl sm:text-6xl font-extrabold text-white tracking-tight">--</span>
+                        <span class="text-xl font-medium text-slate-400">/ 20</span>
+                    </div>
+                </div>
+
+                <!-- Sélecteur de Semestre -->
+                <div class="mt-4 pt-4 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+                    <span id="total-evals-count">0 évaluation(s)</span>
+                    <div class="inline-flex rounded-lg bg-slate-950 p-1 border border-slate-800">
+                        <button id="btn-sem-1" onclick="switchSemester(1)" class="px-3 py-1 rounded-md text-xs font-medium bg-brand-600 text-white shadow">S1</button>
+                        <button id="btn-sem-2" onclick="switchSemester(2)" class="px-3 py-1 rounded-md text-xs font-medium text-slate-400 hover:text-slate-200">S2</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Synthèse des Matières et SAÉ -->
+            <div class="lg:col-span-2 bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl flex flex-col">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-sm font-semibold uppercase tracking-wider text-slate-400 flex items-center gap-2">
+                        <i class="fa-solid fa-chart-pie text-brand-500"></i> Synthèse par Matière & SAÉ
+                    </h2>
+                    <div class="flex gap-2">
+                        <button onclick="setFilter('all')" id="filter-all" class="px-2.5 py-1 text-xs font-medium rounded-md bg-brand-600 text-white">Tous</button>
+                        <button onclick="setFilter('R')" id="filter-R" class="px-2.5 py-1 text-xs font-medium rounded-md bg-slate-800 text-slate-400 hover:text-slate-200">Ressources</button>
+                        <button onclick="setFilter('SAE')" id="filter-SAE" class="px-2.5 py-1 text-xs font-medium rounded-md bg-slate-800 text-slate-400 hover:text-slate-200">SAÉ</button>
+                    </div>
+                </div>
+
+                <!-- Grille des moyennes par matière -->
+                <div id="subject-averages-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 overflow-y-auto max-h-[160px] pr-1">
+                    <!-- Rendu dynamique -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Formulaire d'ajout + Liste des notes -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+            <!-- Formulaire d'ajout d'évaluation -->
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl h-fit">
+                <h3 class="text-base font-semibold text-white mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-plus-circle text-brand-500"></i> Ajouter une évaluation
+                </h3>
+
+                <form id="add-grade-form" onsubmit="handleAddGrade(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-1">Nom de l'évaluation</label>
+                        <input type="text" id="grade-name" required placeholder="ex: DS1 Mathématiques, Projet Web" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-1">Discipline (Matière / SAÉ)</label>
+                        <select id="grade-subject" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent">
+                            <!-- Options générées dynamiquement -->
+                        </select>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-2">
+                        <div>
+                            <label class="block text-xs font-medium text-slate-400 mb-1">Note</label>
+                            <input type="number" id="grade-score" step="0.01" min="0" required placeholder="14.5" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-400 mb-1">Sur</label>
+                            <input type="number" id="grade-max" step="0.1" min="1" value="20" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-400 mb-1">Coeff.</label>
+                            <input type="number" id="grade-coeff" step="0.1" min="0.1" value="1.0" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full bg-brand-600 hover:bg-brand-500 text-white font-medium py-2.5 rounded-lg text-sm transition shadow-lg shadow-brand-600/20 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-plus"></i> Enregistrer la note
+                    </button>
+                </form>
+            </div>
+
+            <!-- Tableau d'historique des notes -->
+            <div class="lg:col-span-2 bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-base font-semibold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-list-check text-brand-500"></i> Historique des Notes
+                        </h3>
+                        <span id="grades-count-badge" class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-800 text-slate-400 border border-slate-700">0 note(s)</span>
+                    </div>
+
+                    <!-- Barre de recherche et filtre -->
+                    <div class="mb-4 flex flex-col sm:flex-row gap-3">
+                        <div class="relative flex-grow">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-xs text-slate-500"></i>
+                            <input type="text" id="search-input" oninput="renderGradesTable()" placeholder="Rechercher une note..." class="w-full bg-slate-950 border border-slate-800 rounded-lg pl-8 pr-3 py-1.5 text-xs text-slate-100 placeholder-slate-600 focus:outline-none focus:ring-1 focus:ring-brand-500">
+                        </div>
+                        <select id="table-filter-subject" onchange="renderGradesTable()" class="bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-slate-100 focus:outline-none focus:ring-1 focus:ring-brand-500">
+                            <option value="">Toutes les matières</option>
+                        </select>
+                    </div>
+
+                    <!-- Tableau HTML -->
+                    <div class="overflow-x-auto rounded-lg border border-slate-800">
+                        <table class="w-full text-left text-xs text-slate-300">
+                            <thead class="bg-slate-950 uppercase text-[10px] tracking-wider text-slate-400 font-semibold border-b border-slate-800">
+                                <tr>
+                                    <th class="py-3 px-4">Évaluation</th>
+                                    <th class="py-3 px-4">Discipline</th>
+                                    <th class="py-3 px-4 text-center">Coeff</th>
+                                    <th class="py-3 px-4 text-right">Note</th>
+                                    <th class="py-3 px-4 text-center">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="grades-table-body" class="divide-y divide-slate-800/60">
+                                <!-- Rendu dynamique -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Modal d'édition de note -->
+    <div id="edit-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 w-full max-w-md shadow-2xl relative">
+            <h3 class="text-base font-semibold text-white mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-pen-to-square text-brand-500"></i> Modifier l'évaluation
+            </h3>
+            
+            <form id="edit-grade-form" onsubmit="handleSaveEdit(event)" class="space-y-4">
+                <input type="hidden" id="edit-grade-id">
+                
+                <div>
+                    <label class="block text-xs font-medium text-slate-400 mb-1">Nom de l'évaluation</label>
+                    <input type="text" id="edit-grade-name" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-medium text-slate-400 mb-1">Discipline (Matière / SAÉ)</label>
+                    <select id="edit-grade-subject" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500">
+                        <!-- Options dynamiques -->
+                    </select>
+                </div>
+
+                <div class="grid grid-cols-3 gap-2">
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-1">Note</label>
+                        <input type="number" id="edit-grade-score" step="0.01" min="0" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-1">Sur</label>
+                        <input type="number" id="edit-grade-max" step="0.1" min="1" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-1">Coeff.</label>
+                        <input type="number" id="edit-grade-coeff" step="0.1" min="0.1" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500">
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-end space-x-3 pt-3 border-t border-slate-800">
+                    <button type="button" onclick="closeEditModal()" class="px-4 py-2 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition">Annuler</button>
+                    <button type="submit" class="px-4 py-2 rounded-lg text-xs font-medium bg-brand-600 hover:bg-brand-500 text-white transition shadow-md shadow-brand-600/20">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="fixed bottom-4 right-4 z-50 space-y-2 pointer-events-none"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
