@@ -4,9 +4,23 @@ Cette application s'utilise directement dans le navigateur ou s'installe sur vot
 
 ---
 
+### Vous pouvez :
+#### - Télécharger le dossier compressé contenant les fichiers (.zip ou .tar.gz) puis le décompresser et ouvrir 'index.html'
+#### - Ou alors, directement faire les actions depuis [la page déployée](https://tomh0999.github.io/gestionnaire_de_notes/).
+
+---
+
+### PC (Windows, Mac, Linux)
+
+1. Ouvrez index.html dans **Chrome**, **Edge** ou **Brave**.
+2. Cliquez sur l'icône d'installation située à droite dans la barre d'adresse.
+3. Si l'icône n'apparaît pas, ouvrez le menu du navigateur (trois points) puis sélectionnez **Installer l'application...**
+
+---
+
 ### iOS (iPhone & iPad)
 
-1. Ouvrez l'application dans **Safari**.
+1. Ouvrez le site dans **Safari**.
 2. Appuyez sur le bouton **Partager** (icône carré avec flèche vers le haut).
 3. Défilez vers le bas et sélectionnez **Sur l'écran d'accueil**.
 4. Validez en appuyant sur **Ajouter**.
@@ -15,17 +29,10 @@ Cette application s'utilise directement dans le navigateur ou s'installe sur vot
 
 ### Android
 
-1. Ouvrez l'application dans **Chrome**.
+1. Ouvrez le site dans **Chrome**.
 2. Appuyez sur les trois points en haut à droite.
 3. Choisissez **Installer l'application** (ou *Ajouter à l'écran d'accueil*).
 4. Validez l'installation.
-
----
-
-### PC & Mac (Chrome, Edge, Brave)
-
-1. Cliquez sur l'icône d'installation située à droite dans la barre d'adresse.
-2. Si l'icône n'apparaît pas, ouvrez le menu du navigateur (trois points) puis sélectionnez **Installer l'application...**
 
 ---
 
