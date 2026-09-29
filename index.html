@@ -66,11 +66,11 @@
             <!-- Actions globales -->
             <div class="flex items-center space-x-2">
                 <button id="export-btn" onclick="exportData()" class="p-2 sm:px-3 sm:py-1.5 text-xs sm:text-sm font-medium bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg transition border border-slate-700 flex items-center gap-2" title="Exporter les données (JSON)">
-                    <i class="fa-solid fa-download text-brand-500"></i>
+                    <i class="fa-solid fa-upload text-brand-500"></i>
                     <span class="hidden sm:inline">Exporter</span>
                 </button>
                 <label for="import-file" class="p-2 sm:px-3 sm:py-1.5 text-xs sm:text-sm font-medium bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg transition border border-slate-700 cursor-pointer flex items-center gap-2" title="Importer des données (JSON)">
-                    <i class="fa-solid fa-upload text-brand-500"></i>
+                    <i class="fa-solid fa-download text-brand-500"></i>
                     <span class="hidden sm:inline">Importer</span>
                 </label>
                 <input type="file" id="import-file" accept=".json" class="hidden" onchange="importData(event)">
