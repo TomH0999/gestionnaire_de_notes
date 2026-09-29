@@ -6,10 +6,18 @@ body {
     padding-right: env(safe-area-inset-right);
 }
 
-/* Custom Dark Scrollbars */
+/* Retrait des flèches d'accordéon par défaut du navigateur */
+details summary::-webkit-details-marker {
+    display: none;
+}
+details summary {
+    list-style: none;
+}
+
+/* Personnalisation de la barre de défilement */
 ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+    width: 6px;
+    height: 6px;
 }
 ::-webkit-scrollbar-track {
     background: #0f172a;

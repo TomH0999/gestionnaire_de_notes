@@ -59,7 +59,7 @@
                 </div>
                 <div>
                     <h1 class="font-bold text-lg tracking-tight text-white leading-tight">BUT1 Informatique</h1>
-                    <p class="text-xs text-slate-400">Gestionnaire de Notes & Moyennes</p>
+                    <p class="text-xs text-slate-400">Gestionnaire de Notes & Moyennes S1</p>
                 </div>
             </div>
 
@@ -87,7 +87,7 @@
         <!-- Tableau de bord supérieur -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             
-            <!-- Carte Moyenne Générale -->
+            <!-- Carte Moyenne Générale & Statut -->
             <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl relative overflow-hidden flex flex-col justify-between">
                 <div class="absolute -right-6 -top-6 w-32 h-32 bg-brand-600/10 rounded-full blur-2xl pointer-events-none"></div>
                 <div>
@@ -95,127 +95,107 @@
                         <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Moyenne Générale</span>
                         <span id="sem-badge" class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-brand-500/10 text-brand-400 border border-brand-500/20">Semestre 1</span>
                     </div>
-                    <div class="flex items-baseline space-x-3 my-4">
+                    <div class="flex items-baseline space-x-3 my-2">
                         <span id="overall-average" class="text-5xl sm:text-6xl font-extrabold text-white tracking-tight">--</span>
                         <span class="text-xl font-medium text-slate-400">/ 20</span>
                     </div>
+
+                    <!-- Statut d'obtention du semestre -->
+                    <div class="mt-3">
+                        <span class="text-xs text-slate-400 block mb-1">Obtention du semestre :</span>
+                        <div id="status-badge" class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-slate-800 text-slate-400 border border-slate-700">
+                            Non calculé
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Sélecteur de Semestre -->
                 <div class="mt-4 pt-4 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
                     <span id="total-evals-count">0 évaluation(s)</span>
-                    <div class="inline-flex rounded-lg bg-slate-950 p-1 border border-slate-800">
-                        <button id="btn-sem-1" onclick="switchSemester(1)" class="px-3 py-1 rounded-md text-xs font-medium bg-brand-600 text-white shadow">S1</button>
-                        <button id="btn-sem-2" onclick="switchSemester(2)" class="px-3 py-1 rounded-md text-xs font-medium text-slate-400 hover:text-slate-200">S2</button>
-                    </div>
                 </div>
             </div>
 
-            <!-- Synthèse des Matières et SAÉ -->
-            <div class="lg:col-span-2 bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl flex flex-col">
+            <!-- Liste des Moyennes d'UE (UE 1.1 à UE 1.6) -->
+            <div class="lg:col-span-2 bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl flex flex-col justify-between">
                 <div class="flex items-center justify-between mb-4">
                     <h2 class="text-sm font-semibold uppercase tracking-wider text-slate-400 flex items-center gap-2">
-                        <i class="fa-solid fa-chart-pie text-brand-500"></i> Synthèse par Matière & SAÉ
+                        <i class="fa-solid fa-chart-pie text-brand-500"></i> Moyennes des Unités d'Enseignement (UE)
                     </h2>
-                    <div class="flex gap-2">
-                        <button onclick="setFilter('all')" id="filter-all" class="px-2.5 py-1 text-xs font-medium rounded-md bg-brand-600 text-white">Tous</button>
-                        <button onclick="setFilter('R')" id="filter-R" class="px-2.5 py-1 text-xs font-medium rounded-md bg-slate-800 text-slate-400 hover:text-slate-200">Ressources</button>
-                        <button onclick="setFilter('SAE')" id="filter-SAE" class="px-2.5 py-1 text-xs font-medium rounded-md bg-slate-800 text-slate-400 hover:text-slate-200">SAÉ</button>
-                    </div>
                 </div>
 
-                <!-- Grille des moyennes par matière -->
-                <div id="subject-averages-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 overflow-y-auto max-h-[160px] pr-1">
-                    <!-- Rendu dynamique -->
+                <!-- Grille des UE -->
+                <div id="ue-averages-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                    <!-- Rendu dynamique des UE 1.1 à UE 1.6 -->
                 </div>
             </div>
         </div>
 
-        <!-- Formulaire d'ajout + Liste des notes -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Formulaire d'ajout d'évaluation -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl h-fit">
+            <h3 class="text-base font-semibold text-white mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-plus-circle text-brand-500"></i> Ajouter une évaluation
+            </h3>
 
-            <!-- Formulaire d'ajout d'évaluation -->
-            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl h-fit">
-                <h3 class="text-base font-semibold text-white mb-4 flex items-center gap-2">
-                    <i class="fa-solid fa-plus-circle text-brand-500"></i> Ajouter une évaluation
-                </h3>
+            <form id="add-grade-form" onsubmit="handleAddGrade(event)" class="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
+                <div class="md:col-span-2">
+                    <label class="block text-xs font-medium text-slate-400 mb-1">Nom de l'évaluation</label>
+                    <input type="text" id="grade-name" required placeholder="ex: DS1, Contrôle TP, Livrable 1" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent">
+                </div>
 
-                <form id="add-grade-form" onsubmit="handleAddGrade(event)" class="space-y-4">
-                    <div>
-                        <label class="block text-xs font-medium text-slate-400 mb-1">Nom de l'évaluation</label>
-                        <input type="text" id="grade-name" required placeholder="ex: DS1 Mathématiques, Projet Web" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent">
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-medium text-slate-400 mb-1">Discipline (Matière / SAÉ)</label>
-                        <select id="grade-subject" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent">
-                            <!-- Options générées dynamiquement -->
-                        </select>
-                    </div>
-
-                    <div class="grid grid-cols-3 gap-2">
-                        <div>
-                            <label class="block text-xs font-medium text-slate-400 mb-1">Note</label>
-                            <input type="number" id="grade-score" step="0.01" min="0" required placeholder="14.5" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-slate-400 mb-1">Sur</label>
-                            <input type="number" id="grade-max" step="0.1" min="1" value="20" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-slate-400 mb-1">Coeff.</label>
-                            <input type="number" id="grade-coeff" step="0.1" min="0.1" value="1.0" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent">
-                        </div>
-                    </div>
-
-                    <button type="submit" class="w-full bg-brand-600 hover:bg-brand-500 text-white font-medium py-2.5 rounded-lg text-sm transition shadow-lg shadow-brand-600/20 flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-plus"></i> Enregistrer la note
-                    </button>
-                </form>
-            </div>
-
-            <!-- Tableau d'historique des notes -->
-            <div class="lg:col-span-2 bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl flex flex-col justify-between">
                 <div>
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-base font-semibold text-white flex items-center gap-2">
-                            <i class="fa-solid fa-list-check text-brand-500"></i> Historique des Notes
-                        </h3>
-                        <span id="grades-count-badge" class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-800 text-slate-400 border border-slate-700">0 note(s)</span>
-                    </div>
+                    <label class="block text-xs font-medium text-slate-400 mb-1">Matière / SAÉ</label>
+                    <select id="grade-subject" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent">
+                        <!-- Options générées dynamiquement -->
+                    </select>
+                </div>
 
-                    <!-- Barre de recherche et filtre -->
-                    <div class="mb-4 flex flex-col sm:flex-row gap-3">
-                        <div class="relative flex-grow">
-                            <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-xs text-slate-500"></i>
-                            <input type="text" id="search-input" oninput="renderGradesTable()" placeholder="Rechercher une note..." class="w-full bg-slate-950 border border-slate-800 rounded-lg pl-8 pr-3 py-1.5 text-xs text-slate-100 placeholder-slate-600 focus:outline-none focus:ring-1 focus:ring-brand-500">
-                        </div>
-                        <select id="table-filter-subject" onchange="renderGradesTable()" class="bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-slate-100 focus:outline-none focus:ring-1 focus:ring-brand-500">
-                            <option value="">Toutes les matières</option>
-                        </select>
+                <div class="grid grid-cols-3 gap-2">
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-1">Note</label>
+                        <input type="number" id="grade-score" step="0.01" min="0" required placeholder="14.5" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent">
                     </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-1">Sur</label>
+                        <input type="number" id="grade-max" step="0.1" min="1" value="20" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-1">Coeff.</label>
+                        <input type="number" id="grade-coeff" step="0.1" min="0.1" value="1.0" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent">
+                    </div>
+                </div>
 
-                    <!-- Tableau HTML -->
-                    <div class="overflow-x-auto rounded-lg border border-slate-800">
-                        <table class="w-full text-left text-xs text-slate-300">
-                            <thead class="bg-slate-950 uppercase text-[10px] tracking-wider text-slate-400 font-semibold border-b border-slate-800">
-                                <tr>
-                                    <th class="py-3 px-4">Évaluation</th>
-                                    <th class="py-3 px-4">Discipline</th>
-                                    <th class="py-3 px-4 text-center">Coeff</th>
-                                    <th class="py-3 px-4 text-right">Note</th>
-                                    <th class="py-3 px-4 text-center">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="grades-table-body" class="divide-y divide-slate-800/60">
-                                <!-- Rendu dynamique -->
-                            </tbody>
-                        </table>
-                    </div>
+                <div>
+                    <button type="submit" class="w-full bg-brand-600 hover:bg-brand-500 text-white font-medium py-2 rounded-lg text-sm transition shadow-lg shadow-brand-600/20 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-plus"></i> Ajouter
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Section Détaillée : Matières (Accordéons) et SAÉ (Blocs simples) -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+            <!-- Section Matières (Ressources) sous forme d'Accordéons -->
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
+                <h3 class="text-base font-semibold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-book-bookmark text-brand-500"></i> Ressources (Matières R1.01 à R1.12)
+                </h3>
+                <div id="ressources-accordion-container" class="space-y-3">
+                    <!-- Généré dynamiquement en accordéons -->
+                </div>
+            </div>
+
+            <!-- Section SAÉ sous forme de blocs de moyenne simples -->
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
+                <h3 class="text-base font-semibold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-diagram-project text-brand-500"></i> Situations d'Apprentissage et d'Évaluation (SAÉ 1.01 à 1.06)
+                </h3>
+                <div id="saes-list-container" class="space-y-3">
+                    <!-- Généré dynamiquement en blocs simples -->
                 </div>
             </div>
 
         </div>
+
     </main>
 
     <!-- Modal d'édition de note -->

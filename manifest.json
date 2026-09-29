@@ -1,7 +1,7 @@
 {
-    "name": "BUT1 Informatique - Notes",
+    "name": "BUT1 Informatique - Notes S1",
     "short_name": "Notes BUT1",
-    "description": "Application autonome de gestion des notes pour le BUT Informatique",
+    "description": "Application autonome de gestion des notes du BUT Informatique S1",
     "start_url": "./index.html",
     "display": "standalone",
     "background_color": "#020617",
