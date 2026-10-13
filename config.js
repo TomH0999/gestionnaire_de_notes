@@ -11,6 +11,6 @@
  * - Laisser vide = mode local (aucune synchronisation, comme la version d'origine).
  */
 window.GDN_CONFIG = {
-    supabaseUrl: "",
-    supabaseKey: ""
+    supabaseUrl: "https://wcdjcpcmavbslwmicosx.supabase.co/rest/v1/",
+    supabaseKey: "sb_publishable_BAHiz2mhBcvt9Sja0u7MqQ_ZcMZz0l2"
 };
