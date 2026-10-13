@@ -27,7 +27,7 @@ Branche : `feature/v2-suivi-scolarite` · Tag de sauvegarde : `sauvegarde-avant-
 - [x] PWA : service worker versionné, manifest, icônes
 - [x] Serveur de test + E2E Playwright (desktop + iPhone + production statique), captures relues
 - [x] Documentation : `CONFIGURATION.md`, `SYNCHRONISATION.md`, `EXIGENCES.md`, README
-- [x] Boucle de correction : toute la suite verte (lint, 372 Vitest, 93 Playwright)
+- [x] Boucle de correction : toute la suite verte (lint, 372 Vitest, 92 Playwright)
 - [x] Vérification finale (consigne de clôture) : voir le compte rendu
 
 ## Décisions

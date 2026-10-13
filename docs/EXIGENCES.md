@@ -1,7 +1,9 @@
 # Exigences → tests → résultat
 
-Résultats de la dernière exécution complète (voir le compte rendu final pour la date et les
-chiffres). ✅ = implémenté et vérifié par des tests automatisés qui passent ·
+Dernière exécution complète : 13/10/2026, depuis une réinstallation propre (`npm ci`, `npm run build`
+sans aucune modification de fichier) : lint OK, feuille CSS à jour, **372 tests Vitest** (71 golden,
+254 unitaires, 47 intégration) et **92 tests Playwright** (Chromium desktop, WebKit iPhone,
+production statique Chromium + WebKit) : **464 passés, 0 ignoré, 0 échec**. ✅ = implémenté et vérifié par des tests automatisés qui passent ·
 ⚠️ = implémenté et testé avec des doublures (serveur simulé, WebKit de Playwright) ; une
 vérification sur l'infrastructure réelle reste à faire (checklist manuelle) · ❌ = non fait.
 

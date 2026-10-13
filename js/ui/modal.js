@@ -76,8 +76,13 @@ export function openModal({ title, icon = "fa-pen-to-square", body, onMount = nu
     });
     panel.querySelectorAll("[data-modal-close]").forEach((b) => b.addEventListener("click", () => close(null)));
     if (onMount) onMount(panel, close);
-    const autofocus = panel.querySelector("[autofocus]") || panel.querySelector('input:not([type="hidden"]), select, textarea, button:not([data-modal-close])');
-    if (autofocus) setTimeout(() => autofocus.focus({ preventScroll: true }), 30);
+    // data-autofocus (et non l'attribut HTML autofocus, traité en différé par le navigateur et
+    // susceptible de voler le focus pendant la saisie)
+    const autofocus = panel.querySelector("[data-autofocus]") || panel.querySelector('input:not([type="hidden"]), select, textarea, button:not([data-modal-close])');
+    // Ne vole jamais le focus d'un champ déjà choisi dans la fenêtre
+    if (autofocus) setTimeout(() => {
+        if (!panel.contains(document.activeElement)) autofocus.focus({ preventScroll: true });
+    }, 30);
     return { panel, close };
 }
 

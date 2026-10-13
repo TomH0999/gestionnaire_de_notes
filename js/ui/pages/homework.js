@@ -203,7 +203,7 @@ export function createHomeworkPage(ctx) {
             body: html`<form id="homework-form" novalidate class="space-y-4">
                 <div>
                     <label for="hw-title" class="${raw(LABEL_CLASS)}">Titre</label>
-                    <input id="hw-title" name="title" type="text" maxlength="200" autocomplete="off" value="${d.title}" class="${raw(INPUT_CLASS)}" ${raw(existing ? "" : "autofocus")}>
+                    <input id="hw-title" name="title" type="text" maxlength="200" autocomplete="off" value="${d.title}" class="${raw(INPUT_CLASS)}" ${raw(existing ? "" : "data-autofocus")}>
                     <p data-error-for="title" class="text-xs text-rose-400 mt-1" hidden></p>
                 </div>
                 <div class="grid grid-cols-2 gap-3">
