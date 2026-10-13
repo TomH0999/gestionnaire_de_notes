@@ -17,25 +17,24 @@ Branche : `feature/v2-suivi-scolarite` · Tag de sauvegarde : `sauvegarde-avant-
 
 ## Étapes
 
-- [x] Phase 0 — exploration, branche, tag, tests golden (71 tests verts sur le code d'origine)
-- [x] Phase 1 — `docs/RISQUES-ET-TESTS.md`
-- [ ] Outillage : Tailwind compilé, dépendances locales (polices, icônes, supabase-js), icônes PNG
-- [ ] Cœur métier pur : programme, calcul (extrait verbatim), nombres, échappement, UUID, dates, devoirs, EDT
-- [ ] Données : stockage local, dépôt, fusion, moteur de synchro, adaptateurs mémoire/Supabase, migration, sauvegardes
-- [ ] SQL Supabase + tests RLS (PGlite) ; fonction Edge `edt-proxy` + tests
-- [ ] Interface : coquille, navigation, Accueil, Notes (+ détail UE), EDT, Devoirs, Réglages
-- [ ] PWA : service worker versionné, manifest, icônes
-- [ ] Serveur de test + E2E Playwright (desktop + iPhone), captures relues
-- [ ] Documentation : guide de configuration, tableau des exigences, README
-- [ ] Boucle de correction : toute la suite verte
+- [x] Phase 0 — exploration, branche, tag, tests golden (71 tests verts sur le code d'origine, commit `68e8914`)
+- [x] Phase 1 — `docs/RISQUES-ET-TESTS.md` (mis à jour avec les tests réels)
+- [x] Outillage : Tailwind compilé, dépendances locales (polices, icônes, supabase-js), icônes PNG
+- [x] Cœur métier pur : programme, calcul (extrait verbatim), nombres, échappement, UUID, dates, devoirs, EDT
+- [x] Données : stockage local, dépôt, fusion, moteur de synchro, adaptateurs mémoire/Supabase, migration, sauvegardes
+- [x] SQL Supabase + tests RLS (PGlite) ; fonction Edge `edt-proxy` + tests
+- [x] Interface : coquille, navigation, Accueil, Notes (+ détail UE), EDT, Devoirs, Réglages
+- [x] PWA : service worker versionné, manifest, icônes
+- [x] Serveur de test + E2E Playwright (desktop + iPhone + production statique), captures relues
+- [x] Documentation : `CONFIGURATION.md`, `SYNCHRONISATION.md`, `EXIGENCES.md`, README
+- [x] Boucle de correction : toute la suite verte (lint, 372 Vitest, 93 Playwright)
+- [x] Vérification finale (consigne de clôture) : voir le compte rendu
 
-## Notes de reprise
+## Décisions
 
-(mis à jour au fil de l'eau)
-
-### Point au 13/10 après-midi
-- Fait : cœur métier, couche données + synchro (tests unitaires/intégration verts), SQL + RLS (PGlite),
-  edt-proxy, interface (5 pages), PWA (sw.js versionné, manifest, icônes), serveur de test, E2E notes /
-  devoirs / EDT / navigation / clavier verts sur Chromium desktop et WebKit iPhone.
-- Reste : E2E accueil, deux appareils, PWA hors-ligne, performance, production statique, supabase-js réel,
-  captures ; lint ; docs (CONFIGURATION, SYNCHRONISATION, EXIGENCES), README ; vérification finale.
+- Pas de framework ni de bundler : modules ES natifs servis tels quels par GitHub Pages.
+- Tailwind compilé et ressources tierces copiées dans `assets/` (hors-ligne fiable, tests sans réseau, plus d'avertissement « CDN de développement »).
+- Supabase (Postgres + Auth + Realtime + RLS) ; table générique `items` ; fonction Edge pour l'EDT (hébergement inchangé).
+- Clé publique dans `config.js` (publique par nature) ; lien ADE dans les réglages synchronisés.
+- Vue (jour/semaine, mois/liste) mémorisée par appareil ; zoom EDT synchronisé, une valeur mobile et une desktop.
+- Les 3 notes d'exemple de l'ancienne version ne sont pas migrées (conservées dans la sauvegarde).

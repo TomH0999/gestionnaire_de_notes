@@ -3,7 +3,7 @@
  * Horloge fixée au mardi 13/10/2026 à 09:00 : Intro. systèmes (08:30–10:00) est en cours,
  * Maths discrètes (10:15) est le prochain cours.
  */
-import { test, expect, openApp, signIn, setAdeUrl, isMobile, tapOrClick, shot, expectNoHorizontalOverflow, TEST_ORIGIN, rows } from "./helpers.js";
+import { test, expect, openApp, signIn, setAdeUrl, isMobile, tapOrClick, shot, expectNoHorizontalOverflow, TEST_ORIGIN, rows, NOW } from "./helpers.js";
 
 async function setup(page) {
     await openApp(page);
@@ -164,6 +164,26 @@ test("cas limites : chevauchements côte à côte, journée entière, annulé ba
     await expect(dialog).toContainText("salle virtuelle numéro 42 avec un nom très long");
     await page.keyboard.press("Escape");
     await shot(page, "edt-cas-limites");
+    expect(problems).toEqual([]);
+});
+
+test("rafraîchissement automatique à l'ouverture quand le cache a plus d'une heure (et pas avant)", async ({ page, problems }) => {
+    await setup(page);
+    let proxyCalls = 0;
+    page.on("request", (r) => {
+        if (r.url().includes("__test/edt")) proxyCalls++;
+    });
+    // 20 minutes plus tard : cache récent, aucune requête
+    await page.clock.setFixedTime(new Date(NOW.getTime() + 20 * 60000));
+    await page.reload();
+    await expect(page.locator(".edt-event").first()).toBeVisible();
+    await page.waitForTimeout(800);
+    expect(proxyCalls).toBe(0);
+    // 2 heures plus tard : cache ancien → récupération automatique dès l'ouverture
+    await page.clock.setFixedTime(new Date(NOW.getTime() + 2 * 3600000));
+    await page.reload();
+    await expect.poll(() => proxyCalls, { timeout: 10000 }).toBeGreaterThan(0);
+    await expect(page.locator("[data-edt-updated]")).toContainText("13/10/2026 à 11:00");
     expect(problems).toEqual([]);
 });
 

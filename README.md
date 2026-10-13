@@ -66,7 +66,7 @@ données, règles de conflit, migration) est décrit dans [docs/SYNCHRONISATION.
 ## Développement
 
 Site statique sans étape de build côté hébergement (GitHub Pages sert le dépôt tel quel).
-Outils de développement et de test (Node.js 22+) :
+Outils de développement et de test (Node.js 22.18+ ou 24) :
 
 ```bash
 npm install
