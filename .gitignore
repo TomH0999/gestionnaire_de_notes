@@ -17,3 +17,6 @@ supabase/.branches/
 .idea/
 .vscode/
 *.iml
+
+# Réglages locaux d'outils (aperçu Claude Code, etc.)
+.claude/

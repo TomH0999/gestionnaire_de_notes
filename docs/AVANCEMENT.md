@@ -32,3 +32,10 @@ Branche : `feature/v2-suivi-scolarite` · Tag de sauvegarde : `sauvegarde-avant-
 ## Notes de reprise
 
 (mis à jour au fil de l'eau)
+
+### Point au 13/10 après-midi
+- Fait : cœur métier, couche données + synchro (tests unitaires/intégration verts), SQL + RLS (PGlite),
+  edt-proxy, interface (5 pages), PWA (sw.js versionné, manifest, icônes), serveur de test, E2E notes /
+  devoirs / EDT / navigation / clavier verts sur Chromium desktop et WebKit iPhone.
+- Reste : E2E accueil, deux appareils, PWA hors-ligne, performance, production statique, supabase-js réel,
+  captures ; lint ; docs (CONFIGURATION, SYNCHRONISATION, EXIGENCES), README ; vérification finale.

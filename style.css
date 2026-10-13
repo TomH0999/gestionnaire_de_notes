@@ -1,9 +1,88 @@
+/* Police Inter servie localement (police variable, sous-ensemble latin) */
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url('assets/fonts/inter-latin-wght-normal.woff2') format('woff2');
+}
+
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    padding-top: env(safe-area-inset-top);
-    padding-bottom: env(safe-area-inset-bottom);
+    /* Encoche / bords arrondis (iPhone) : l'en-tête gère le haut, la barre d'onglets le bas */
     padding-left: env(safe-area-inset-left);
     padding-right: env(safe-area-inset-right);
+    -webkit-tap-highlight-color: transparent;
+    text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+/* Défilement vers un champ (focus clavier, ancre) : jamais caché sous l'en-tête collant
+   ni sous la barre d'onglets fixe */
+html {
+    scroll-padding-top: calc(5rem + env(safe-area-inset-top));
+    scroll-padding-bottom: calc(5.5rem + env(safe-area-inset-bottom));
+}
+@media (min-width: 1024px) {
+    html {
+        scroll-padding-bottom: 1rem;
+    }
+}
+
+.safe-top {
+    padding-top: env(safe-area-inset-top);
+}
+
+.safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Espace sous le contenu pour ne pas être masqué par la barre d'onglets (mobile) */
+.main-bottom-space {
+    padding-bottom: calc(5.5rem + env(safe-area-inset-bottom));
+}
+@media (min-width: 1024px) {
+    .main-bottom-space {
+        padding-bottom: 2rem;
+    }
+}
+
+/* Notifications au-dessus de la barre d'onglets sur mobile */
+.toast-area {
+    bottom: calc(4.75rem + env(safe-area-inset-bottom));
+}
+@media (min-width: 1024px) {
+    .toast-area {
+        bottom: 1rem;
+    }
+}
+
+/* Listes déroulantes : rendu identique sur tous les navigateurs (Safari/iOS affiche sinon
+   un contrôle natif clair, illisible sur le thème sombre) */
+select {
+    -webkit-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%2394a3b8'%3E%3Cpath fill-rule='evenodd' d='M5.23 7.21a.75.75 0 011.06.02L10 11.17l3.71-3.94a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z' clip-rule='evenodd'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.6rem center;
+    background-size: 1.1rem;
+    padding-right: 2.2rem !important;
+    text-overflow: ellipsis;
+}
+select option,
+select optgroup {
+    background-color: #020617;
+    color: #f1f5f9;
+}
+
+/* Champs date/heure : icône du sélecteur lisible sur fond sombre */
+input[type="date"],
+input[type="time"] {
+    color-scheme: dark;
 }
 
 /* Retrait des flèches d'accordéon par défaut du navigateur */
@@ -28,4 +107,69 @@ details summary {
 }
 ::-webkit-scrollbar-thumb:hover {
     background: #475569;
+}
+
+/* Focus clavier visible et cohérent */
+:focus-visible {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+}
+
+/* Infobulle de détail (UE) — positionnée en JS, bornée au viewport */
+.gdn-popover {
+    position: fixed;
+    z-index: 70;
+    width: max-content;
+    max-width: calc(100vw - 16px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    background: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 0.75rem;
+    padding: 0.75rem 0.875rem;
+    box-shadow: 0 20px 45px -15px rgba(2, 6, 23, 0.9);
+}
+
+/* Emploi du temps : grille zoomable (variables mises à jour par le zoom) */
+.edt-scroll {
+    --edt-hour: 56px;
+    --edt-font: 1;
+    --edt-col-min: 120px;
+    max-height: calc(100vh - 16rem);
+    max-height: calc(100dvh - 16rem);
+    min-height: 18rem;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    touch-action: pan-x pan-y pinch-zoom;
+}
+.edt-event {
+    font-size: calc(0.6875rem * var(--edt-font));
+    line-height: 1.2;
+}
+.edt-event-time,
+.edt-event-room {
+    font-size: calc(0.625rem * var(--edt-font));
+}
+.edt-event-title {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+    word-break: break-word;
+}
+.edt-allday {
+    font-size: calc(0.6875rem * var(--edt-font));
+}
+.edt-hours span {
+    font-size: calc(0.625rem * var(--edt-font));
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
 }

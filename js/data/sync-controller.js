@@ -27,7 +27,7 @@ export function getDeviceId(store) {
 }
 
 export class SyncController {
-    constructor({ store, backend = null, deviceId = getDeviceId(store), deviceNow = () => Date.now(), timers = globalThis, engineOptions = {} }) {
+    constructor({ store, backend = null, configured = !!backend, deviceId = getDeviceId(store), deviceNow = () => Date.now(), timers = globalThis, engineOptions = {} }) {
         this.store = store;
         this.backend = backend;
         this.deviceId = deviceId;
@@ -40,12 +40,23 @@ export class SyncController {
         const meta = store.getJSON("meta", {});
         this.repo = new Repository({ store, scope: meta.activeScope || "local", deviceId, clock: () => this.deviceNow() + this.clockOffset });
         this.state = {
-            mode: backend ? "signed-out" : "local",
+            mode: configured ? "signed-out" : "local",
             user: meta.lastUser || null,
             sessionExpired: false,
-            sync: { phase: backend ? "signed-out" : "disabled", pending: this.repo.pendingCount(), lastSyncAt: null, error: null, realtime: "off" }
+            sync: { phase: configured ? (backend ? "signed-out" : "starting") : "disabled", pending: this.repo.pendingCount(), lastSyncAt: null, error: null, realtime: "off" }
         };
         this.repo.subscribe(() => this.refreshPending());
+    }
+
+    /**
+     * Branche l'adaptateur une fois la bibliothèque chargée : l'application s'affiche
+     * d'abord depuis le cache local (instantané), la synchronisation démarre ensuite.
+     */
+    async attachBackend(backend) {
+        this.backend = backend;
+        if (this.state.mode === "local") this.state.mode = "signed-out";
+        this.state.sync = { ...this.state.sync, phase: "signed-out" };
+        return this.init();
     }
 
     // ---------- Abonnement à l'état ----------

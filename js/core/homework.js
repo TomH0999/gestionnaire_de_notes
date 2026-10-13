@@ -27,10 +27,10 @@ export function homeworkType(id) {
  * Les classes Tailwind sont écrites en entier pour être conservées à la compilation.
  */
 export const IMPORTANCE_LEVELS = {
-    1: { label: "Faible", icon: "fa-angle-down", text: "text-slate-300", chip: "bg-slate-500/15 text-slate-300 border-slate-500/30", bar: "bg-slate-400", dot: "bg-slate-400" },
-    2: { label: "Normale", icon: "fa-equals", text: "text-sky-300", chip: "bg-sky-500/15 text-sky-300 border-sky-500/30", bar: "bg-sky-400", dot: "bg-sky-400" },
-    3: { label: "Haute", icon: "fa-angle-up", text: "text-amber-300", chip: "bg-amber-500/15 text-amber-300 border-amber-500/30", bar: "bg-amber-400", dot: "bg-amber-400" },
-    4: { label: "Critique", icon: "fa-angles-up", text: "text-rose-300", chip: "bg-rose-500/15 text-rose-300 border-rose-500/30", bar: "bg-rose-400", dot: "bg-rose-400" }
+    1: { label: "Faible", icon: "fa-angle-down", text: "text-slate-300", chip: "bg-slate-500/15 text-slate-300 border-slate-500/30", bar: "bg-slate-400", dot: "bg-slate-400", border: "border-l-slate-400" },
+    2: { label: "Normale", icon: "fa-equals", text: "text-sky-300", chip: "bg-sky-500/15 text-sky-300 border-sky-500/30", bar: "bg-sky-400", dot: "bg-sky-400", border: "border-l-sky-400" },
+    3: { label: "Haute", icon: "fa-angle-up", text: "text-amber-300", chip: "bg-amber-500/15 text-amber-300 border-amber-500/30", bar: "bg-amber-400", dot: "bg-amber-400", border: "border-l-amber-400" },
+    4: { label: "Critique", icon: "fa-angles-up", text: "text-rose-300", chip: "bg-rose-500/15 text-rose-300 border-rose-500/30", bar: "bg-rose-400", dot: "bg-rose-400", border: "border-l-rose-400" }
 };
 
 export function importanceLevel(value) {
