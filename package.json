@@ -1,0 +1,15 @@
+{
+  "name": "gestionnaire-de-notes",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Suivi de scolarité BUT1 Informatique (notes, emploi du temps, devoirs) — PWA statique hébergée sur GitHub Pages.",
+  "scripts": {
+    "test": "vitest run",
+    "test:golden": "vitest run tests/golden"
+  },
+  "devDependencies": {
+    "jsdom": "30.1.2",
+    "vitest": "5.0.4"
+  }
+}

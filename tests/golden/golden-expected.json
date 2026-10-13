@@ -1,0 +1,1213 @@
+{
+  "_avertissement": "Valeurs figées générées depuis la version d'origine (script.js du commit 3ec1d0c) avant toute modification. NE JAMAIS MODIFIER NI RÉGÉNÉRER.",
+  "_genereLe": "2026-10-13T10:56:39.578Z",
+  "datasets": {
+    "exemple-initial": {
+      "calc": {
+        "subjectAverages": {
+          "R1.01": 15,
+          "R1.02": 14,
+          "R1.03": null,
+          "R1.04": null,
+          "R1.05": null,
+          "R1.06": null,
+          "R1.07": null,
+          "R1.08": null,
+          "R1.09": null,
+          "R1.10": null,
+          "R1.11": null,
+          "R1.12": null,
+          "SAE 1.01": 16,
+          "SAE 1.02": null,
+          "SAE 1.03": null,
+          "SAE 1.04": null,
+          "SAE 1.05": null,
+          "SAE 1.06": null
+        },
+        "ueAverages": {
+          "UE 1.1": 15.297872340425531,
+          "UE 1.2": 15,
+          "UE 1.3": null,
+          "UE 1.4": null,
+          "UE 1.5": 14,
+          "UE 1.6": 14
+        },
+        "globalAverage": 14.574468085106382,
+        "status": "En cours d'évaluation",
+        "statusClass": "bg-brand-500/20 text-brand-400 border-brand-500/30",
+        "totalEvals": 3
+      },
+      "display": {
+        "moyenneGenerale": "14.57",
+        "statut": "En cours d'évaluation",
+        "nombreEvaluations": "3 évaluation(s) saisie(s)",
+        "ue": {
+          "UE 1.1": "15.30",
+          "UE 1.2": "15.00",
+          "UE 1.3": "--",
+          "UE 1.4": "--",
+          "UE 1.5": "14.00",
+          "UE 1.6": "14.00"
+        },
+        "ressources": {
+          "R1.01": "15.00 / 20",
+          "R1.02": "14.00 / 20",
+          "R1.03": "Sans note",
+          "R1.04": "Sans note",
+          "R1.05": "Sans note",
+          "R1.06": "Sans note",
+          "R1.07": "Sans note",
+          "R1.08": "Sans note",
+          "R1.09": "Sans note",
+          "R1.10": "Sans note",
+          "R1.11": "Sans note",
+          "R1.12": "Sans note"
+        },
+        "saes": {
+          "SAE 1.01": "16.00 / 20",
+          "SAE 1.02": "N/A",
+          "SAE 1.03": "N/A",
+          "SAE 1.04": "N/A",
+          "SAE 1.05": "N/A",
+          "SAE 1.06": "N/A"
+        }
+      }
+    },
+    "aucune-note": {
+      "calc": {
+        "subjectAverages": {
+          "R1.01": null,
+          "R1.02": null,
+          "R1.03": null,
+          "R1.04": null,
+          "R1.05": null,
+          "R1.06": null,
+          "R1.07": null,
+          "R1.08": null,
+          "R1.09": null,
+          "R1.10": null,
+          "R1.11": null,
+          "R1.12": null,
+          "SAE 1.01": null,
+          "SAE 1.02": null,
+          "SAE 1.03": null,
+          "SAE 1.04": null,
+          "SAE 1.05": null,
+          "SAE 1.06": null
+        },
+        "ueAverages": {
+          "UE 1.1": null,
+          "UE 1.2": null,
+          "UE 1.3": null,
+          "UE 1.4": null,
+          "UE 1.5": null,
+          "UE 1.6": null
+        },
+        "globalAverage": null,
+        "status": "Non calculé",
+        "statusClass": "bg-slate-800 text-slate-400 border-slate-700",
+        "totalEvals": 0
+      },
+      "display": {
+        "moyenneGenerale": "--",
+        "statut": "Non calculé",
+        "nombreEvaluations": "0 évaluation(s) saisie(s)",
+        "ue": {
+          "UE 1.1": "--",
+          "UE 1.2": "--",
+          "UE 1.3": "--",
+          "UE 1.4": "--",
+          "UE 1.5": "--",
+          "UE 1.6": "--"
+        },
+        "ressources": {
+          "R1.01": "Sans note",
+          "R1.02": "Sans note",
+          "R1.03": "Sans note",
+          "R1.04": "Sans note",
+          "R1.05": "Sans note",
+          "R1.06": "Sans note",
+          "R1.07": "Sans note",
+          "R1.08": "Sans note",
+          "R1.09": "Sans note",
+          "R1.10": "Sans note",
+          "R1.11": "Sans note",
+          "R1.12": "Sans note"
+        },
+        "saes": {
+          "SAE 1.01": "N/A",
+          "SAE 1.02": "N/A",
+          "SAE 1.03": "N/A",
+          "SAE 1.04": "N/A",
+          "SAE 1.05": "N/A",
+          "SAE 1.06": "N/A"
+        }
+      }
+    },
+    "cas-normal": {
+      "calc": {
+        "subjectAverages": {
+          "R1.01": 14,
+          "R1.02": 14.9,
+          "R1.03": 11,
+          "R1.04": 11.25,
+          "R1.05": 16,
+          "R1.06": 10.75,
+          "R1.07": 10,
+          "R1.08": 15,
+          "R1.09": 13.5,
+          "R1.10": 17,
+          "R1.11": 12,
+          "R1.12": 14,
+          "SAE 1.01": 16,
+          "SAE 1.02": 11,
+          "SAE 1.03": 13,
+          "SAE 1.04": 15,
+          "SAE 1.05": 12,
+          "SAE 1.06": 14
+        },
+        "ueAverages": {
+          "UE 1.1": 15.088,
+          "UE 1.2": 11.54,
+          "UE 1.3": 12.6325,
+          "UE 1.4": 14.505,
+          "UE 1.5": 13.332,
+          "UE 1.6": 14.21
+        },
+        "globalAverage": 13.551250000000001,
+        "status": "OUI (Validé)",
+        "statusClass": "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
+        "totalEvals": 23
+      },
+      "display": {
+        "moyenneGenerale": "13.55",
+        "statut": "OUI (Validé)",
+        "nombreEvaluations": "23 évaluation(s) saisie(s)",
+        "ue": {
+          "UE 1.1": "15.09",
+          "UE 1.2": "11.54",
+          "UE 1.3": "12.63",
+          "UE 1.4": "14.51",
+          "UE 1.5": "13.33",
+          "UE 1.6": "14.21"
+        },
+        "ressources": {
+          "R1.01": "14.00 / 20",
+          "R1.02": "14.90 / 20",
+          "R1.03": "11.00 / 20",
+          "R1.04": "11.25 / 20",
+          "R1.05": "16.00 / 20",
+          "R1.06": "10.75 / 20",
+          "R1.07": "10.00 / 20",
+          "R1.08": "15.00 / 20",
+          "R1.09": "13.50 / 20",
+          "R1.10": "17.00 / 20",
+          "R1.11": "12.00 / 20",
+          "R1.12": "14.00 / 20"
+        },
+        "saes": {
+          "SAE 1.01": "16.00 / 20",
+          "SAE 1.02": "11.00 / 20",
+          "SAE 1.03": "13.00 / 20",
+          "SAE 1.04": "15.00 / 20",
+          "SAE 1.05": "12.00 / 20",
+          "SAE 1.06": "14.00 / 20"
+        }
+      }
+    },
+    "notes-manquantes": {
+      "calc": {
+        "subjectAverages": {
+          "R1.01": 13,
+          "R1.02": null,
+          "R1.03": null,
+          "R1.04": 15,
+          "R1.05": 12,
+          "R1.06": 11,
+          "R1.07": 6.5,
+          "R1.08": null,
+          "R1.09": null,
+          "R1.10": null,
+          "R1.11": null,
+          "R1.12": null,
+          "SAE 1.01": 9,
+          "SAE 1.02": null,
+          "SAE 1.03": null,
+          "SAE 1.04": null,
+          "SAE 1.05": 10,
+          "SAE 1.06": null
+        },
+        "ueAverages": {
+          "UE 1.1": 11.048780487804878,
+          "UE 1.2": 10.868421052631579,
+          "UE 1.3": 15,
+          "UE 1.4": 11.666666666666666,
+          "UE 1.5": 10,
+          "UE 1.6": null
+        },
+        "globalAverage": 11.716773641420625,
+        "status": "En cours d'évaluation",
+        "statusClass": "bg-brand-500/20 text-brand-400 border-brand-500/30",
+        "totalEvals": 7
+      },
+      "display": {
+        "moyenneGenerale": "11.72",
+        "statut": "En cours d'évaluation",
+        "nombreEvaluations": "7 évaluation(s) saisie(s)",
+        "ue": {
+          "UE 1.1": "11.05",
+          "UE 1.2": "10.87",
+          "UE 1.3": "15.00",
+          "UE 1.4": "11.67",
+          "UE 1.5": "10.00",
+          "UE 1.6": "--"
+        },
+        "ressources": {
+          "R1.01": "13.00 / 20",
+          "R1.02": "Sans note",
+          "R1.03": "Sans note",
+          "R1.04": "15.00 / 20",
+          "R1.05": "12.00 / 20",
+          "R1.06": "11.00 / 20",
+          "R1.07": "6.50 / 20",
+          "R1.08": "Sans note",
+          "R1.09": "Sans note",
+          "R1.10": "Sans note",
+          "R1.11": "Sans note",
+          "R1.12": "Sans note"
+        },
+        "saes": {
+          "SAE 1.01": "9.00 / 20",
+          "SAE 1.02": "N/A",
+          "SAE 1.03": "N/A",
+          "SAE 1.04": "N/A",
+          "SAE 1.05": "10.00 / 20",
+          "SAE 1.06": "N/A"
+        }
+      }
+    },
+    "coefficient-zero": {
+      "calc": {
+        "subjectAverages": {
+          "R1.01": null,
+          "R1.02": 10,
+          "R1.03": null,
+          "R1.04": null,
+          "R1.05": null,
+          "R1.06": null,
+          "R1.07": null,
+          "R1.08": null,
+          "R1.09": null,
+          "R1.10": 15,
+          "R1.11": null,
+          "R1.12": null,
+          "SAE 1.01": 12,
+          "SAE 1.02": null,
+          "SAE 1.03": null,
+          "SAE 1.04": null,
+          "SAE 1.05": null,
+          "SAE 1.06": null
+        },
+        "ueAverages": {
+          "UE 1.1": 11.89655172413793,
+          "UE 1.2": null,
+          "UE 1.3": 15,
+          "UE 1.4": null,
+          "UE 1.5": 10,
+          "UE 1.6": 13.4375
+        },
+        "globalAverage": 12.583512931034482,
+        "status": "En cours d'évaluation",
+        "statusClass": "bg-brand-500/20 text-brand-400 border-brand-500/30",
+        "totalEvals": 6
+      },
+      "display": {
+        "moyenneGenerale": "12.58",
+        "statut": "En cours d'évaluation",
+        "nombreEvaluations": "6 évaluation(s) saisie(s)",
+        "ue": {
+          "UE 1.1": "11.90",
+          "UE 1.2": "--",
+          "UE 1.3": "15.00",
+          "UE 1.4": "--",
+          "UE 1.5": "10.00",
+          "UE 1.6": "13.44"
+        },
+        "ressources": {
+          "R1.01": "Sans note",
+          "R1.02": "10.00 / 20",
+          "R1.03": "Sans note",
+          "R1.04": "Sans note",
+          "R1.05": "Sans note",
+          "R1.06": "Sans note",
+          "R1.07": "Sans note",
+          "R1.08": "Sans note",
+          "R1.09": "Sans note",
+          "R1.10": "15.00 / 20",
+          "R1.11": "Sans note",
+          "R1.12": "Sans note"
+        },
+        "saes": {
+          "SAE 1.01": "12.00 / 20",
+          "SAE 1.02": "N/A",
+          "SAE 1.03": "N/A",
+          "SAE 1.04": "N/A",
+          "SAE 1.05": "N/A",
+          "SAE 1.06": "N/A"
+        }
+      }
+    },
+    "notes-decimales": {
+      "calc": {
+        "subjectAverages": {
+          "R1.01": 0.15000000000000002,
+          "R1.02": 10.005000000000003,
+          "R1.03": 13.333666666666666,
+          "R1.04": 13.333333333333332,
+          "R1.05": 13.875,
+          "R1.06": 9.995,
+          "R1.07": null,
+          "R1.08": null,
+          "R1.09": null,
+          "R1.10": null,
+          "R1.11": null,
+          "R1.12": null,
+          "SAE 1.01": 14.125,
+          "SAE 1.02": 15.554000000000002,
+          "SAE 1.03": 10,
+          "SAE 1.04": 16.666,
+          "SAE 1.05": null,
+          "SAE 1.06": null
+        },
+        "ueAverages": {
+          "UE 1.1": 7.354893617021276,
+          "UE 1.2": 10.06689411764706,
+          "UE 1.3": 11.70740243902439,
+          "UE 1.4": 14.31968085106383,
+          "UE 1.5": 10.005000000000003,
+          "UE 1.6": 10.005000000000003
+        },
+        "globalAverage": 10.576478504126094,
+        "status": "NON (Refusé)",
+        "statusClass": "bg-rose-500/20 text-rose-400 border-rose-500/30",
+        "totalEvals": 13
+      },
+      "display": {
+        "moyenneGenerale": "10.58",
+        "statut": "NON (Refusé)",
+        "nombreEvaluations": "13 évaluation(s) saisie(s)",
+        "ue": {
+          "UE 1.1": "7.35",
+          "UE 1.2": "10.07",
+          "UE 1.3": "11.71",
+          "UE 1.4": "14.32",
+          "UE 1.5": "10.01",
+          "UE 1.6": "10.01"
+        },
+        "ressources": {
+          "R1.01": "0.15 / 20",
+          "R1.02": "10.01 / 20",
+          "R1.03": "13.33 / 20",
+          "R1.04": "13.33 / 20",
+          "R1.05": "13.88 / 20",
+          "R1.06": "9.99 / 20",
+          "R1.07": "Sans note",
+          "R1.08": "Sans note",
+          "R1.09": "Sans note",
+          "R1.10": "Sans note",
+          "R1.11": "Sans note",
+          "R1.12": "Sans note"
+        },
+        "saes": {
+          "SAE 1.01": "14.13 / 20",
+          "SAE 1.02": "15.55 / 20",
+          "SAE 1.03": "10.00 / 20",
+          "SAE 1.04": "16.67 / 20",
+          "SAE 1.05": "N/A",
+          "SAE 1.06": "N/A"
+        }
+      }
+    },
+    "zero-sur-vingt": {
+      "calc": {
+        "subjectAverages": {
+          "R1.01": 0,
+          "R1.02": 0,
+          "R1.03": 0,
+          "R1.04": 0,
+          "R1.05": 0,
+          "R1.06": 0,
+          "R1.07": 0,
+          "R1.08": 0,
+          "R1.09": 0,
+          "R1.10": 0,
+          "R1.11": 0,
+          "R1.12": 0,
+          "SAE 1.01": 0,
+          "SAE 1.02": 0,
+          "SAE 1.03": 0,
+          "SAE 1.04": 0,
+          "SAE 1.05": 0,
+          "SAE 1.06": 0
+        },
+        "ueAverages": {
+          "UE 1.1": 0,
+          "UE 1.2": 0,
+          "UE 1.3": 0,
+          "UE 1.4": 0,
+          "UE 1.5": 0,
+          "UE 1.6": 0
+        },
+        "globalAverage": 0,
+        "status": "NON (Refusé)",
+        "statusClass": "bg-rose-500/20 text-rose-400 border-rose-500/30",
+        "totalEvals": 18
+      },
+      "display": {
+        "moyenneGenerale": "0.00",
+        "statut": "NON (Refusé)",
+        "nombreEvaluations": "18 évaluation(s) saisie(s)",
+        "ue": {
+          "UE 1.1": "0.00",
+          "UE 1.2": "0.00",
+          "UE 1.3": "0.00",
+          "UE 1.4": "0.00",
+          "UE 1.5": "0.00",
+          "UE 1.6": "0.00"
+        },
+        "ressources": {
+          "R1.01": "0.00 / 20",
+          "R1.02": "0.00 / 20",
+          "R1.03": "0.00 / 20",
+          "R1.04": "0.00 / 20",
+          "R1.05": "0.00 / 20",
+          "R1.06": "0.00 / 20",
+          "R1.07": "0.00 / 20",
+          "R1.08": "0.00 / 20",
+          "R1.09": "0.00 / 20",
+          "R1.10": "0.00 / 20",
+          "R1.11": "0.00 / 20",
+          "R1.12": "0.00 / 20"
+        },
+        "saes": {
+          "SAE 1.01": "0.00 / 20",
+          "SAE 1.02": "0.00 / 20",
+          "SAE 1.03": "0.00 / 20",
+          "SAE 1.04": "0.00 / 20",
+          "SAE 1.05": "0.00 / 20",
+          "SAE 1.06": "0.00 / 20"
+        }
+      }
+    },
+    "vingt-sur-vingt": {
+      "calc": {
+        "subjectAverages": {
+          "R1.01": 20,
+          "R1.02": 20,
+          "R1.03": 20,
+          "R1.04": 20,
+          "R1.05": 20,
+          "R1.06": 20,
+          "R1.07": 20,
+          "R1.08": 20,
+          "R1.09": 20,
+          "R1.10": 20,
+          "R1.11": 20,
+          "R1.12": 20,
+          "SAE 1.01": 20,
+          "SAE 1.02": 20,
+          "SAE 1.03": 20,
+          "SAE 1.04": 20,
+          "SAE 1.05": 20,
+          "SAE 1.06": 20
+        },
+        "ueAverages": {
+          "UE 1.1": 20,
+          "UE 1.2": 20,
+          "UE 1.3": 20,
+          "UE 1.4": 20,
+          "UE 1.5": 20,
+          "UE 1.6": 20
+        },
+        "globalAverage": 20,
+        "status": "OUI (Validé)",
+        "statusClass": "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
+        "totalEvals": 18
+      },
+      "display": {
+        "moyenneGenerale": "20.00",
+        "statut": "OUI (Validé)",
+        "nombreEvaluations": "18 évaluation(s) saisie(s)",
+        "ue": {
+          "UE 1.1": "20.00",
+          "UE 1.2": "20.00",
+          "UE 1.3": "20.00",
+          "UE 1.4": "20.00",
+          "UE 1.5": "20.00",
+          "UE 1.6": "20.00"
+        },
+        "ressources": {
+          "R1.01": "20.00 / 20",
+          "R1.02": "20.00 / 20",
+          "R1.03": "20.00 / 20",
+          "R1.04": "20.00 / 20",
+          "R1.05": "20.00 / 20",
+          "R1.06": "20.00 / 20",
+          "R1.07": "20.00 / 20",
+          "R1.08": "20.00 / 20",
+          "R1.09": "20.00 / 20",
+          "R1.10": "20.00 / 20",
+          "R1.11": "20.00 / 20",
+          "R1.12": "20.00 / 20"
+        },
+        "saes": {
+          "SAE 1.01": "20.00 / 20",
+          "SAE 1.02": "20.00 / 20",
+          "SAE 1.03": "20.00 / 20",
+          "SAE 1.04": "20.00 / 20",
+          "SAE 1.05": "20.00 / 20",
+          "SAE 1.06": "20.00 / 20"
+        }
+      }
+    },
+    "matiere-sans-note": {
+      "calc": {
+        "subjectAverages": {
+          "R1.01": null,
+          "R1.02": null,
+          "R1.03": null,
+          "R1.04": null,
+          "R1.05": null,
+          "R1.06": null,
+          "R1.07": null,
+          "R1.08": null,
+          "R1.09": null,
+          "R1.10": 12,
+          "R1.11": null,
+          "R1.12": null,
+          "SAE 1.01": null,
+          "SAE 1.02": null,
+          "SAE 1.03": null,
+          "SAE 1.04": null,
+          "SAE 1.05": null,
+          "SAE 1.06": null
+        },
+        "ueAverages": {
+          "UE 1.1": 12,
+          "UE 1.2": null,
+          "UE 1.3": 12,
+          "UE 1.4": null,
+          "UE 1.5": null,
+          "UE 1.6": 12
+        },
+        "globalAverage": 12,
+        "status": "En cours d'évaluation",
+        "statusClass": "bg-brand-500/20 text-brand-400 border-brand-500/30",
+        "totalEvals": 1
+      },
+      "display": {
+        "moyenneGenerale": "12.00",
+        "statut": "En cours d'évaluation",
+        "nombreEvaluations": "1 évaluation(s) saisie(s)",
+        "ue": {
+          "UE 1.1": "12.00",
+          "UE 1.2": "--",
+          "UE 1.3": "12.00",
+          "UE 1.4": "--",
+          "UE 1.5": "--",
+          "UE 1.6": "12.00"
+        },
+        "ressources": {
+          "R1.01": "Sans note",
+          "R1.02": "Sans note",
+          "R1.03": "Sans note",
+          "R1.04": "Sans note",
+          "R1.05": "Sans note",
+          "R1.06": "Sans note",
+          "R1.07": "Sans note",
+          "R1.08": "Sans note",
+          "R1.09": "Sans note",
+          "R1.10": "12.00 / 20",
+          "R1.11": "Sans note",
+          "R1.12": "Sans note"
+        },
+        "saes": {
+          "SAE 1.01": "N/A",
+          "SAE 1.02": "N/A",
+          "SAE 1.03": "N/A",
+          "SAE 1.04": "N/A",
+          "SAE 1.05": "N/A",
+          "SAE 1.06": "N/A"
+        }
+      }
+    },
+    "rattrapage-bornes": {
+      "calc": {
+        "subjectAverages": {
+          "R1.01": 10,
+          "R1.02": 10,
+          "R1.03": 8,
+          "R1.04": 8,
+          "R1.05": 13,
+          "R1.06": 8,
+          "R1.07": 8,
+          "R1.08": 12,
+          "R1.09": 12,
+          "R1.10": 10,
+          "R1.11": 11,
+          "R1.12": 16,
+          "SAE 1.01": 10,
+          "SAE 1.02": 8,
+          "SAE 1.03": 12,
+          "SAE 1.04": 14,
+          "SAE 1.05": 15,
+          "SAE 1.06": 13
+        },
+        "ueAverages": {
+          "UE 1.1": 10,
+          "UE 1.2": 8.48,
+          "UE 1.3": 10.02,
+          "UE 1.4": 12.44,
+          "UE 1.5": 12.69,
+          "UE 1.6": 12.41
+        },
+        "globalAverage": 11.006666666666666,
+        "status": "OUI avec rattrapage",
+        "statusClass": "bg-amber-500/20 text-amber-400 border-amber-500/30",
+        "totalEvals": 18
+      },
+      "display": {
+        "moyenneGenerale": "11.01",
+        "statut": "OUI avec rattrapage",
+        "nombreEvaluations": "18 évaluation(s) saisie(s)",
+        "ue": {
+          "UE 1.1": "10.00",
+          "UE 1.2": "8.48",
+          "UE 1.3": "10.02",
+          "UE 1.4": "12.44",
+          "UE 1.5": "12.69",
+          "UE 1.6": "12.41"
+        },
+        "ressources": {
+          "R1.01": "10.00 / 20",
+          "R1.02": "10.00 / 20",
+          "R1.03": "8.00 / 20",
+          "R1.04": "8.00 / 20",
+          "R1.05": "13.00 / 20",
+          "R1.06": "8.00 / 20",
+          "R1.07": "8.00 / 20",
+          "R1.08": "12.00 / 20",
+          "R1.09": "12.00 / 20",
+          "R1.10": "10.00 / 20",
+          "R1.11": "11.00 / 20",
+          "R1.12": "16.00 / 20"
+        },
+        "saes": {
+          "SAE 1.01": "10.00 / 20",
+          "SAE 1.02": "8.00 / 20",
+          "SAE 1.03": "12.00 / 20",
+          "SAE 1.04": "14.00 / 20",
+          "SAE 1.05": "15.00 / 20",
+          "SAE 1.06": "13.00 / 20"
+        }
+      }
+    },
+    "borne-huit": {
+      "calc": {
+        "subjectAverages": {
+          "R1.01": 8,
+          "R1.02": 8,
+          "R1.03": 20,
+          "R1.04": 20,
+          "R1.05": 15,
+          "R1.06": 20,
+          "R1.07": 20,
+          "R1.08": 20,
+          "R1.09": 15,
+          "R1.10": 8,
+          "R1.11": 20,
+          "R1.12": 20,
+          "SAE 1.01": 8,
+          "SAE 1.02": 20,
+          "SAE 1.03": 20,
+          "SAE 1.04": 15,
+          "SAE 1.05": 20,
+          "SAE 1.06": 20
+        },
+        "ueAverages": {
+          "UE 1.1": 8,
+          "UE 1.2": 17.12,
+          "UE 1.3": 18.56,
+          "UE 1.4": 15.9,
+          "UE 1.5": 17.84,
+          "UE 1.6": 17.53
+        },
+        "globalAverage": 15.825000000000001,
+        "status": "OUI avec rattrapage",
+        "statusClass": "bg-amber-500/20 text-amber-400 border-amber-500/30",
+        "totalEvals": 18
+      },
+      "display": {
+        "moyenneGenerale": "15.83",
+        "statut": "OUI avec rattrapage",
+        "nombreEvaluations": "18 évaluation(s) saisie(s)",
+        "ue": {
+          "UE 1.1": "8.00",
+          "UE 1.2": "17.12",
+          "UE 1.3": "18.56",
+          "UE 1.4": "15.90",
+          "UE 1.5": "17.84",
+          "UE 1.6": "17.53"
+        },
+        "ressources": {
+          "R1.01": "8.00 / 20",
+          "R1.02": "8.00 / 20",
+          "R1.03": "20.00 / 20",
+          "R1.04": "20.00 / 20",
+          "R1.05": "15.00 / 20",
+          "R1.06": "20.00 / 20",
+          "R1.07": "20.00 / 20",
+          "R1.08": "20.00 / 20",
+          "R1.09": "15.00 / 20",
+          "R1.10": "8.00 / 20",
+          "R1.11": "20.00 / 20",
+          "R1.12": "20.00 / 20"
+        },
+        "saes": {
+          "SAE 1.01": "8.00 / 20",
+          "SAE 1.02": "20.00 / 20",
+          "SAE 1.03": "20.00 / 20",
+          "SAE 1.04": "15.00 / 20",
+          "SAE 1.05": "20.00 / 20",
+          "SAE 1.06": "20.00 / 20"
+        }
+      }
+    },
+    "sous-huit": {
+      "calc": {
+        "subjectAverages": {
+          "R1.01": 8,
+          "R1.02": 8,
+          "R1.03": 20,
+          "R1.04": 20,
+          "R1.05": 15,
+          "R1.06": 20,
+          "R1.07": 20,
+          "R1.08": 20,
+          "R1.09": 15,
+          "R1.10": 8,
+          "R1.11": 20,
+          "R1.12": 20,
+          "SAE 1.01": 7.9,
+          "SAE 1.02": 20,
+          "SAE 1.03": 20,
+          "SAE 1.04": 15,
+          "SAE 1.05": 20,
+          "SAE 1.06": 20
+        },
+        "ueAverages": {
+          "UE 1.1": 7.96,
+          "UE 1.2": 17.12,
+          "UE 1.3": 18.56,
+          "UE 1.4": 15.9,
+          "UE 1.5": 17.84,
+          "UE 1.6": 17.53
+        },
+        "globalAverage": 15.818333333333333,
+        "status": "NON (Refusé)",
+        "statusClass": "bg-rose-500/20 text-rose-400 border-rose-500/30",
+        "totalEvals": 18
+      },
+      "display": {
+        "moyenneGenerale": "15.82",
+        "statut": "NON (Refusé)",
+        "nombreEvaluations": "18 évaluation(s) saisie(s)",
+        "ue": {
+          "UE 1.1": "7.96",
+          "UE 1.2": "17.12",
+          "UE 1.3": "18.56",
+          "UE 1.4": "15.90",
+          "UE 1.5": "17.84",
+          "UE 1.6": "17.53"
+        },
+        "ressources": {
+          "R1.01": "8.00 / 20",
+          "R1.02": "8.00 / 20",
+          "R1.03": "20.00 / 20",
+          "R1.04": "20.00 / 20",
+          "R1.05": "15.00 / 20",
+          "R1.06": "20.00 / 20",
+          "R1.07": "20.00 / 20",
+          "R1.08": "20.00 / 20",
+          "R1.09": "15.00 / 20",
+          "R1.10": "8.00 / 20",
+          "R1.11": "20.00 / 20",
+          "R1.12": "20.00 / 20"
+        },
+        "saes": {
+          "SAE 1.01": "7.90 / 20",
+          "SAE 1.02": "20.00 / 20",
+          "SAE 1.03": "20.00 / 20",
+          "SAE 1.04": "15.00 / 20",
+          "SAE 1.05": "20.00 / 20",
+          "SAE 1.06": "20.00 / 20"
+        }
+      }
+    },
+    "trois-ue-sous-dix": {
+      "calc": {
+        "subjectAverages": {
+          "R1.01": 9,
+          "R1.02": 9,
+          "R1.03": 9,
+          "R1.04": 9,
+          "R1.05": 15,
+          "R1.06": 9,
+          "R1.07": 9,
+          "R1.08": 15,
+          "R1.09": 15,
+          "R1.10": 9,
+          "R1.11": 9,
+          "R1.12": 15,
+          "SAE 1.01": 9,
+          "SAE 1.02": 9,
+          "SAE 1.03": 9,
+          "SAE 1.04": 15,
+          "SAE 1.05": 15,
+          "SAE 1.06": 15
+        },
+        "ueAverages": {
+          "UE 1.1": 9,
+          "UE 1.2": 9,
+          "UE 1.3": 9,
+          "UE 1.4": 13.92,
+          "UE 1.5": 13.02,
+          "UE 1.6": 13.38
+        },
+        "globalAverage": 11.219999999999999,
+        "status": "NON (Refusé)",
+        "statusClass": "bg-rose-500/20 text-rose-400 border-rose-500/30",
+        "totalEvals": 18
+      },
+      "display": {
+        "moyenneGenerale": "11.22",
+        "statut": "NON (Refusé)",
+        "nombreEvaluations": "18 évaluation(s) saisie(s)",
+        "ue": {
+          "UE 1.1": "9.00",
+          "UE 1.2": "9.00",
+          "UE 1.3": "9.00",
+          "UE 1.4": "13.92",
+          "UE 1.5": "13.02",
+          "UE 1.6": "13.38"
+        },
+        "ressources": {
+          "R1.01": "9.00 / 20",
+          "R1.02": "9.00 / 20",
+          "R1.03": "9.00 / 20",
+          "R1.04": "9.00 / 20",
+          "R1.05": "15.00 / 20",
+          "R1.06": "9.00 / 20",
+          "R1.07": "9.00 / 20",
+          "R1.08": "15.00 / 20",
+          "R1.09": "15.00 / 20",
+          "R1.10": "9.00 / 20",
+          "R1.11": "9.00 / 20",
+          "R1.12": "15.00 / 20"
+        },
+        "saes": {
+          "SAE 1.01": "9.00 / 20",
+          "SAE 1.02": "9.00 / 20",
+          "SAE 1.03": "9.00 / 20",
+          "SAE 1.04": "15.00 / 20",
+          "SAE 1.05": "15.00 / 20",
+          "SAE 1.06": "15.00 / 20"
+        }
+      }
+    },
+    "baremes-varies": {
+      "calc": {
+        "subjectAverages": {
+          "R1.01": 16,
+          "R1.02": 20,
+          "R1.03": null,
+          "R1.04": null,
+          "R1.05": null,
+          "R1.06": null,
+          "R1.07": null,
+          "R1.08": null,
+          "R1.09": null,
+          "R1.10": null,
+          "R1.11": null,
+          "R1.12": null,
+          "SAE 1.01": 8.75,
+          "SAE 1.02": null,
+          "SAE 1.03": null,
+          "SAE 1.04": null,
+          "SAE 1.05": null,
+          "SAE 1.06": null
+        },
+        "ueAverages": {
+          "UE 1.1": 13.425531914893616,
+          "UE 1.2": 16,
+          "UE 1.3": null,
+          "UE 1.4": null,
+          "UE 1.5": 20,
+          "UE 1.6": 20
+        },
+        "globalAverage": 17.356382978723403,
+        "status": "En cours d'évaluation",
+        "statusClass": "bg-brand-500/20 text-brand-400 border-brand-500/30",
+        "totalEvals": 7
+      },
+      "display": {
+        "moyenneGenerale": "17.36",
+        "statut": "En cours d'évaluation",
+        "nombreEvaluations": "7 évaluation(s) saisie(s)",
+        "ue": {
+          "UE 1.1": "13.43",
+          "UE 1.2": "16.00",
+          "UE 1.3": "--",
+          "UE 1.4": "--",
+          "UE 1.5": "20.00",
+          "UE 1.6": "20.00"
+        },
+        "ressources": {
+          "R1.01": "16.00 / 20",
+          "R1.02": "20.00 / 20",
+          "R1.03": "Sans note",
+          "R1.04": "Sans note",
+          "R1.05": "Sans note",
+          "R1.06": "Sans note",
+          "R1.07": "Sans note",
+          "R1.08": "Sans note",
+          "R1.09": "Sans note",
+          "R1.10": "Sans note",
+          "R1.11": "Sans note",
+          "R1.12": "Sans note"
+        },
+        "saes": {
+          "SAE 1.01": "8.75 / 20",
+          "SAE 1.02": "N/A",
+          "SAE 1.03": "N/A",
+          "SAE 1.04": "N/A",
+          "SAE 1.05": "N/A",
+          "SAE 1.06": "N/A"
+        }
+      }
+    },
+    "code-inconnu": {
+      "calc": {
+        "subjectAverages": {
+          "R1.01": 10,
+          "R1.02": null,
+          "R1.03": null,
+          "R1.04": null,
+          "R1.05": null,
+          "R1.06": null,
+          "R1.07": null,
+          "R1.08": null,
+          "R1.09": null,
+          "R1.10": null,
+          "R1.11": null,
+          "R1.12": null,
+          "SAE 1.01": null,
+          "SAE 1.02": null,
+          "SAE 1.03": null,
+          "SAE 1.04": null,
+          "SAE 1.05": null,
+          "SAE 1.06": null
+        },
+        "ueAverages": {
+          "UE 1.1": 10,
+          "UE 1.2": 10,
+          "UE 1.3": null,
+          "UE 1.4": null,
+          "UE 1.5": null,
+          "UE 1.6": null
+        },
+        "globalAverage": 10,
+        "status": "En cours d'évaluation",
+        "statusClass": "bg-brand-500/20 text-brand-400 border-brand-500/30",
+        "totalEvals": 3
+      },
+      "display": {
+        "moyenneGenerale": "10.00",
+        "statut": "En cours d'évaluation",
+        "nombreEvaluations": "3 évaluation(s) saisie(s)",
+        "ue": {
+          "UE 1.1": "10.00",
+          "UE 1.2": "10.00",
+          "UE 1.3": "--",
+          "UE 1.4": "--",
+          "UE 1.5": "--",
+          "UE 1.6": "--"
+        },
+        "ressources": {
+          "R1.01": "10.00 / 20",
+          "R1.02": "Sans note",
+          "R1.03": "Sans note",
+          "R1.04": "Sans note",
+          "R1.05": "Sans note",
+          "R1.06": "Sans note",
+          "R1.07": "Sans note",
+          "R1.08": "Sans note",
+          "R1.09": "Sans note",
+          "R1.10": "Sans note",
+          "R1.11": "Sans note",
+          "R1.12": "Sans note"
+        },
+        "saes": {
+          "SAE 1.01": "N/A",
+          "SAE 1.02": "N/A",
+          "SAE 1.03": "N/A",
+          "SAE 1.04": "N/A",
+          "SAE 1.05": "N/A",
+          "SAE 1.06": "N/A"
+        }
+      }
+    },
+    "volumineux-600": {
+      "calc": {
+        "subjectAverages": {
+          "R1.01": 10.175728155339808,
+          "R1.02": 8.183477777777778,
+          "R1.03": 10.527030927835053,
+          "R1.04": 11.0465775862069,
+          "R1.05": 9.250955357142855,
+          "R1.06": 10.857917525773194,
+          "R1.07": 8.643873786407765,
+          "R1.08": 8.815978947368423,
+          "R1.09": 9.32117094017094,
+          "R1.10": 10.6547,
+          "R1.11": 9.71690909090909,
+          "R1.12": 9.7270303030303,
+          "SAE 1.01": 10.002227642276422,
+          "SAE 1.02": 10.09581111111111,
+          "SAE 1.03": 11.284726190476189,
+          "SAE 1.04": 7.509430107526883,
+          "SAE 1.05": 11.27841964285714,
+          "SAE 1.06": 12.560692307692307
+        },
+        "ueAverages": {
+          "UE 1.1": 9.89599621548662,
+          "UE 1.2": 10.0529761539744,
+          "UE 1.3": 10.905926809593831,
+          "UE 1.4": 8.847811382631614,
+          "UE 1.5": 9.822244536568695,
+          "UE 1.6": 10.739387632928475
+        },
+        "globalAverage": 10.04405712186394,
+        "status": "NON (Refusé)",
+        "statusClass": "bg-rose-500/20 text-rose-400 border-rose-500/30",
+        "totalEvals": 600
+      },
+      "display": {
+        "moyenneGenerale": "10.04",
+        "statut": "NON (Refusé)",
+        "nombreEvaluations": "600 évaluation(s) saisie(s)",
+        "ue": {
+          "UE 1.1": "9.90",
+          "UE 1.2": "10.05",
+          "UE 1.3": "10.91",
+          "UE 1.4": "8.85",
+          "UE 1.5": "9.82",
+          "UE 1.6": "10.74"
+        },
+        "ressources": {
+          "R1.01": "10.18 / 20",
+          "R1.02": "8.18 / 20",
+          "R1.03": "10.53 / 20",
+          "R1.04": "11.05 / 20",
+          "R1.05": "9.25 / 20",
+          "R1.06": "10.86 / 20",
+          "R1.07": "8.64 / 20",
+          "R1.08": "8.82 / 20",
+          "R1.09": "9.32 / 20",
+          "R1.10": "10.65 / 20",
+          "R1.11": "9.72 / 20",
+          "R1.12": "9.73 / 20"
+        },
+        "saes": {
+          "SAE 1.01": "10.00 / 20",
+          "SAE 1.02": "10.10 / 20",
+          "SAE 1.03": "11.28 / 20",
+          "SAE 1.04": "7.51 / 20",
+          "SAE 1.05": "11.28 / 20",
+          "SAE 1.06": "12.56 / 20"
+        }
+      }
+    },
+    "aleatoire-coeff-zero": {
+      "calc": {
+        "subjectAverages": {
+          "R1.01": 11.632095238095237,
+          "R1.02": 12.662592592592592,
+          "R1.03": 9.349473684210528,
+          "R1.04": 8.304315789473685,
+          "R1.05": 8.865,
+          "R1.06": 5.587692307692308,
+          "R1.07": 9.83,
+          "R1.08": 8.752,
+          "R1.09": 10.323076923076922,
+          "R1.10": 12.120941176470588,
+          "R1.11": 12.427789473684209,
+          "R1.12": 10.92021875,
+          "SAE 1.01": 8.64813043478261,
+          "SAE 1.02": 10.894999999999998,
+          "SAE 1.03": 6.9019047619047615,
+          "SAE 1.04": 8.344,
+          "SAE 1.05": 15.2024,
+          "SAE 1.06": 8.128571428571428
+        },
+        "ueAverages": {
+          "UE 1.1": 10.59149975561239,
+          "UE 1.2": 9.991970387507228,
+          "UE 1.3": 8.668238003833112,
+          "UE 1.4": 8.15416923076923,
+          "UE 1.5": 12.587435087719298,
+          "UE 1.6": 9.88440109661369
+        },
+        "globalAverage": 9.979618927009158,
+        "status": "NON (Refusé)",
+        "statusClass": "bg-rose-500/20 text-rose-400 border-rose-500/30",
+        "totalEvals": 120
+      },
+      "display": {
+        "moyenneGenerale": "9.98",
+        "statut": "NON (Refusé)",
+        "nombreEvaluations": "120 évaluation(s) saisie(s)",
+        "ue": {
+          "UE 1.1": "10.59",
+          "UE 1.2": "9.99",
+          "UE 1.3": "8.67",
+          "UE 1.4": "8.15",
+          "UE 1.5": "12.59",
+          "UE 1.6": "9.88"
+        },
+        "ressources": {
+          "R1.01": "11.63 / 20",
+          "R1.02": "12.66 / 20",
+          "R1.03": "9.35 / 20",
+          "R1.04": "8.30 / 20",
+          "R1.05": "8.87 / 20",
+          "R1.06": "5.59 / 20",
+          "R1.07": "9.83 / 20",
+          "R1.08": "8.75 / 20",
+          "R1.09": "10.32 / 20",
+          "R1.10": "12.12 / 20",
+          "R1.11": "12.43 / 20",
+          "R1.12": "10.92 / 20"
+        },
+        "saes": {
+          "SAE 1.01": "8.65 / 20",
+          "SAE 1.02": "10.89 / 20",
+          "SAE 1.03": "6.90 / 20",
+          "SAE 1.04": "8.34 / 20",
+          "SAE 1.05": "15.20 / 20",
+          "SAE 1.06": "8.13 / 20"
+        }
+      }
+    }
+  }
+}

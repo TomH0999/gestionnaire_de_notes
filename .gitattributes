@@ -1,0 +1,2 @@
+# Fixtures iCalendar : conserver les fins de ligne CRLF exactes (format réel du serveur ADE)
+*.ics -text

@@ -1,0 +1,19 @@
+# Dépendances et sorties d'outils (jamais publiées sur GitHub Pages)
+node_modules/
+coverage/
+test-results/
+playwright-report/
+blob-report/
+.cache/
+
+# Environnements locaux / secrets
+.env
+.env.*
+!.env.example
+supabase/.temp/
+supabase/.branches/
+
+# IDE
+.idea/
+.vscode/
+*.iml
