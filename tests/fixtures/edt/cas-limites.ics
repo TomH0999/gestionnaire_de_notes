@@ -1,0 +1,108 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Tests//Cas limites EDT//FR
+BEGIN:VEVENT
+UID:cas-chevauchement-A
+DTSTART:20261014T120000Z
+DTEND:20261014T140000Z
+SUMMARY:Anglais TP groupe A
+LOCATION:Salle 101
+DESCRIPTION:\n\nSèteA\nMARTIN   CLAIRE\n(Exported :13/10/2026 12:52)\n
+END:VEVENT
+BEGIN:VEVENT
+UID:cas-chevauchement-B
+DTSTART:20261014T123000Z
+DTEND:20261014T143000Z
+SUMMARY:Anglais TP groupe B
+LOCATION:Salle 102
+DESCRIPTION:\n\nSèteB\nDUBOIS   EMMA\n
+END:VEVENT
+BEGIN:VEVENT
+UID:cas-chevauchement-C
+DTSTART:20261014T140000Z
+DTEND:20261014T150000Z
+SUMMARY:Maths discrètes TD
+LOCATION:Salle 006
+DESCRIPTION:\n\nSète\nTHOMAS   HUGO\nGARCIA DA SILVA   ZOÉ\n
+END:VEVENT
+BEGIN:VEVENT
+UID:cas-journee-entiere
+DTSTART;VALUE=DATE:20261016
+DTEND;VALUE=DATE:20261017
+SUMMARY:Journée portes ouvertes
+LOCATION:IUT
+END:VEVENT
+BEGIN:VEVENT
+UID:cas-annule-status
+DTSTART:20261015T063000Z
+DTEND:20261015T080000Z
+SUMMARY:Intro. archi.
+LOCATION:Salle 006
+STATUS:CANCELLED
+END:VEVENT
+BEGIN:VEVENT
+UID:cas-annule-titre
+DTSTART:20261015T081500Z
+DTEND:20261015T101500Z
+SUMMARY:ANNULÉ - Intro B.D.
+LOCATION:Salle 006
+END:VEVENT
+BEGIN:VEVENT
+UID:cas-injection
+DTSTART:20261015T120000Z
+DTEND:20261015T130000Z
+SUMMARY:<img src=x onerror=alert(1)> Cours piégé
+LOCATION:<script>alert('salle')</script>
+DESCRIPTION:\n\n<b>Groupe</b>\nRICHARD   NATHAN\n
+END:VEVENT
+BEGIN:VEVENT
+UID:cas-texte-long
+DTSTART:20261015T133000Z
+DTEND:20261015T153000Z
+SUMMARY:SAE - S1.05 - Recueil de besoins : atelier très long avec un intitulé qui ne tient absolument pas sur une seule ligne de la grille
+LOCATION:Cours en ligne (CEL) IUTMS - salle virtuelle numéro 42 avec un nom très long
+DESCRIPTION:\n\nSète\nRemarque : apporter son ordinateur portable chargé\, son chargeur\; et le sujet imprimé \ version 2\n
+END:VEVENT
+BEGIN:VEVENT
+UID:cas-tzid-ete
+DTSTART;TZID=Europe/Paris:20261023T090000
+DTEND;TZID=Europe/Paris:20261023T103000
+SUMMARY:PPP (heure locale, été)
+LOCATION:Salle 006
+END:VEVENT
+BEGIN:VEVENT
+UID:cas-tzid-hiver
+DTSTART;TZID=Europe/Paris:20261026T090000
+DTEND;TZID=Europe/Paris:20261026T103000
+SUMMARY:PPP (heure locale, hiver)
+LOCATION:Salle 006
+END:VEVENT
+BEGIN:VEVENT
+UID:cas-flottant
+DTSTART:20261027T140000
+DURATION:PT1H30M
+SUMMARY:Gestion proj. orga. (heure flottante + durée)
+END:VEVENT
+BEGIN:VEVENT
+UID:cas-sans-debut
+SUMMARY:Événement sans date (doit être ignoré)
+END:VEVENT
+BEGIN:VEVENT
+UID:cas-fin-avant-debut
+DTSTART:20261028T080000Z
+DTEND:20261028T070000Z
+SUMMARY:Outils maths. fondamentaux (fin incohérente)
+END:VEVENT
+BEGIN:VEVENT
+UID:cas-alarme
+DTSTART:20261029T080000Z
+DTEND:20261029T090000Z
+SUMMARY:Intro. Economie
+BEGIN:VALARM
+TRIGGER:-PT15M
+SUMMARY:Ceci est une alarme et pas l'intitulé
+END:VALARM
+LOCATION:K014
+END:VEVENT
+Ligne totalement invalide sans deux-points
+END:VCALENDAR

@@ -5,18 +5,16 @@
  * l'endroit où vit aujourd'hui calculateAllAverages(). Les valeurs attendues
  * (golden-expected.json) ne changent jamais.
  *
- * Phase 0 (avant refonte) : le calcul vit dans script.js (fonctions globales).
+ * Historique :
+ *  - Phase 0 (avant refonte) : le calcul vivait dans script.js (fonctions globales),
+ *    exécuté via legacy-harness.js → 71 tests verts.
+ *  - v2 : le calcul est un module ES (js/core/grades-calc.js), corps repris à l'identique.
  */
-import { readFileSync } from "node:fs";
-import { fileURLToPath } from "node:url";
-import path from "node:path";
-import { runLegacyCalc } from "./legacy-harness.js";
+import { calculateAllAverages } from "../../js/core/grades-calc.js";
 
-const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
-const source = readFileSync(path.join(root, "script.js"), "utf8");
-
-export const IMPLEMENTATION = "script.js (version d'origine)";
+export const IMPLEMENTATION = "js/core/grades-calc.js (module v2)";
 
 export function calculateWithCurrentImplementation(grades) {
-    return runLegacyCalc(source, grades);
+    // Même isolation que le harnais d'origine : copie profonde en entrée, résultat sérialisé.
+    return JSON.parse(JSON.stringify(calculateAllAverages(JSON.parse(JSON.stringify(grades)))));
 }
