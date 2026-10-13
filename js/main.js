@@ -13,9 +13,11 @@ import { showToast } from "./ui/toast.js";
 
 function readConfig() {
     const c = (typeof window !== "undefined" && window.GDN_CONFIG) || {};
+    const text = (v) => (typeof v === "string" ? v.trim() : "");
     return {
-        supabaseUrl: typeof c.supabaseUrl === "string" ? c.supabaseUrl.trim() : "",
-        supabaseAnonKey: typeof c.supabaseAnonKey === "string" ? c.supabaseAnonKey.trim() : "",
+        supabaseUrl: text(c.supabaseUrl),
+        // Clé PUBLIQUE : « publishable » (sb_publishable_…) ou « anon » historique (ancien nom accepté)
+        supabaseAnonKey: text(c.supabaseKey) || text(c.supabaseAnonKey),
         testBackend: c.testBackend && typeof c.testBackend.module === "string" ? c.testBackend : null
     };
 }

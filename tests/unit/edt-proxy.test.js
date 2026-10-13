@@ -6,7 +6,7 @@ import { describe, it, expect, beforeEach } from "vitest";
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
-import { handleRequest, buildIcsUrl, corsHeaders, CACHE_TTL_MS } from "../../supabase/functions/edt-proxy/index.ts";
+import { handleRequest, buildIcsUrl, corsHeaders, projectPublicKey, CACHE_TTL_MS } from "../../supabase/functions/edt-proxy/index.ts";
 
 const fixtures = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "fixtures", "edt");
 const ICS = readFileSync(path.join(fixtures, "ade-semestre-anonymise.ics"), "utf8");
@@ -155,6 +155,18 @@ describe("Requêtes", () => {
         expect(r.status).toBe(200);
         const r2 = await handleRequest(request({ from: "2026-09-28", to: "2026-10-28" }), makeDeps());
         expect((await r2.json()).code).toBe("no-url");
+    });
+    it("clé publique du projet : anon historique, sinon publishable (JSON nommé), sinon en-tête apikey de l'application", async () => {
+        const req = new Request("https://x", { method: "POST", headers: { apikey: "sb_publishable_entete" } });
+        expect(projectPublicKey(req, { get: (k) => ({ SUPABASE_ANON_KEY: "anon-hist" })[k] })).toBe("anon-hist");
+        expect(projectPublicKey(req, { get: (k) => ({ SUPABASE_PUBLISHABLE_KEYS: '{"default":"sb_publishable_defaut"}' })[k] })).toBe("sb_publishable_defaut");
+        expect(projectPublicKey(req, { get: () => undefined })).toBe("sb_publishable_entete");
+        // Projet récent sans variable SUPABASE_ANON_KEY : la vérification de l'utilisateur fonctionne toujours
+        const d = makeDeps();
+        d.env = { get: (k) => ({ SUPABASE_URL: "https://projet.supabase.co", SUPABASE_PUBLISHABLE_KEYS: '{"default":"sb_publishable_defaut"}' })[k] };
+        const r = await handleRequest(request(validBody), d);
+        expect(r.status).toBe(200);
+        expect(d.calls.find((c) => c.url.endsWith("/auth/v1/user")).init.headers.apikey).toBe("sb_publishable_defaut");
     });
     it("préflight CORS, méthode refusée, corps invalide, origine non autorisée", async () => {
         const pre = await handleRequest(new Request("https://x/functions/v1/edt-proxy", { method: "OPTIONS", headers: { Origin: ORIGIN } }), deps);

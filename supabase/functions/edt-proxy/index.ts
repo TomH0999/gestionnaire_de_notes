@@ -93,12 +93,37 @@ function json(status: number, body: Record<string, unknown>, cors: Record<string
     return new Response(JSON.stringify(body), { status, headers: { ...cors, "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" } });
 }
 
-/** Vérifie que l'appelant est un utilisateur connecté (la clé anonyme seule est refusée). */
+/**
+ * Clé publique du projet pour interroger Supabase Auth : clé « anon » historique, sinon clé
+ * « publishable » (variable SUPABASE_PUBLISHABLE_KEYS = objet JSON des clés par nom), sinon
+ * la clé publique envoyée par l'application dans l'en-tête apikey.
+ */
+export function projectPublicKey(req: Request, env: EnvReader): string {
+    const legacy = env.get("SUPABASE_ANON_KEY");
+    if (legacy) return legacy;
+    const named = env.get("SUPABASE_PUBLISHABLE_KEYS");
+    if (named) {
+        try {
+            const keys = JSON.parse(named);
+            const first = keys && (keys.default || Object.values(keys)[0]);
+            if (typeof first === "string" && first) return first;
+        } catch {
+            /* format inattendu : on se rabat sur l'en-tête */
+        }
+    }
+    return env.get("SUPABASE_PUBLISHABLE_KEY") || req.headers.get("apikey") || "";
+}
+
+/**
+ * Vérifie que l'appelant est un utilisateur connecté (la clé publique seule est refusée) en
+ * interrogeant Supabase Auth : indépendant de l'option « Verify JWT » de la plateforme, qui
+ * peut donc rester désactivée (nécessaire avec les nouvelles clés « publishable »).
+ */
 export async function verifyUser(req: Request, deps: Deps): Promise<boolean> {
     const auth = req.headers.get("Authorization") || "";
     if (!/^Bearer\s+[\w.-]+$/i.test(auth)) return false;
     const base = (deps.env.get("SUPABASE_URL") || "").replace(/\/+$/, "");
-    const key = deps.env.get("SUPABASE_ANON_KEY") || deps.env.get("SUPABASE_PUBLISHABLE_KEY") || "";
+    const key = projectPublicKey(req, deps.env);
     if (!base) return false;
     try {
         const res = await deps.fetch(`${base}/auth/v1/user`, { headers: { Authorization: auth, apikey: key } });

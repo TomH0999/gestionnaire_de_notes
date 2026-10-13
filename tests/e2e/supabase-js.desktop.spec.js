@@ -35,7 +35,7 @@ test("supabase-js réel : connexion, synchronisation (upsert, mise à jour condi
     };
 
     await page.route("**/config.js", (route) =>
-        route.fulfill({ contentType: "text/javascript", body: `window.GDN_CONFIG = { supabaseUrl: "${SUPA}", supabaseAnonKey: "${ANON_KEY}" };` })
+        route.fulfill({ contentType: "text/javascript", body: `window.GDN_CONFIG = { supabaseUrl: "${SUPA}", supabaseKey: "${ANON_KEY}" };` })
     );
     await page.route(`${SUPA}/**`, async (route) => {
         const req = route.request();

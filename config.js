@@ -1,14 +1,16 @@
 /**
  * Configuration publique de l'application (lue par le navigateur, servie par GitHub Pages).
  *
- * Renseignez l'URL de votre projet Supabase et sa clé PUBLIQUE (« anon » ou « publishable »),
- * visibles dans Supabase → Project Settings → API. Voir docs/CONFIGURATION.md.
+ * Renseignez l'URL de votre projet Supabase et sa clé PUBLIQUE :
+ *   - clé « publishable » (commence par sb_publishable_) : Supabase → Project Settings → API Keys ;
+ *   - ou, sur un ancien projet, la clé « anon » (même rôle).
+ * Voir docs/CONFIGURATION.md.
  *
- * - La clé publique PEUT être publiée : la sécurité repose sur l'authentification et la RLS.
- * - Ne mettez JAMAIS ici la clé « service_role » / « secret » (un test le vérifie).
+ * - La clé publique PEUT être publiée : la sécurité repose sur la connexion et la RLS.
+ * - Ne mettez JAMAIS ici la clé « secret » (sb_secret_…) ni « service_role » (un test le vérifie).
  * - Laisser vide = mode local (aucune synchronisation, comme la version d'origine).
  */
 window.GDN_CONFIG = {
     supabaseUrl: "",
-    supabaseAnonKey: ""
+    supabaseKey: ""
 };
