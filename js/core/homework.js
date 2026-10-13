@@ -135,8 +135,16 @@ export function compareByUrgency(a, b, now) {
     return String(a.title).localeCompare(String(b.title), "fr");
 }
 
+/** Même ordre que compareByUrgency, scores calculés une seule fois par élément. */
 export function sortByUrgency(items, now) {
-    return [...items].sort((a, b) => compareByUrgency(a, b, now));
+    return items
+        .map((hw) => ({ hw, score: urgencyScore(hw, now), due: dueInstant(hw) }))
+        .sort((a, b) => {
+            if (a.score !== b.score) return b.score - a.score;
+            if (a.due !== b.due) return a.due - b.due;
+            return String(a.hw.title).localeCompare(String(b.hw.title), "fr");
+        })
+        .map((x) => x.hw);
 }
 
 export function compareByDue(a, b) {

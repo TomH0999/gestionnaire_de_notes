@@ -8,6 +8,7 @@ import {
     computeState,
     urgencyScore,
     sortByUrgency,
+    compareByUrgency,
     selectDoNow,
     anticipationSpan,
     importanceLevel,
@@ -140,6 +141,22 @@ describe("Urgence", () => {
             "SAE lointaine",
             "Fait"
         ]);
+    });
+    it("le tri optimisé (scores précalculés) donne exactement l'ordre du comparateur de référence", () => {
+        let seed = 12345;
+        const rnd = () => ((seed = (seed * 1103515245 + 12345) % 2147483648) / 2147483648);
+        const items = Array.from({ length: 400 }, (_, i) =>
+            hw({
+                title: `T${i % 37}`,
+                dueDate: `2026-${String(9 + Math.floor(rnd() * 4)).padStart(2, "0")}-${String(1 + Math.floor(rnd() * 28)).padStart(2, "0")}`,
+                dueTime: rnd() < 0.5 ? "08:00" : "23:59",
+                importance: 1 + Math.floor(rnd() * 4),
+                anticipationDays: [0, 2, 7, 14, 30][Math.floor(rnd() * 5)],
+                status: rnd() < 0.15 ? "done" : "todo"
+            })
+        );
+        const reference = [...items].sort((a, b) => compareByUrgency(a, b, now));
+        expect(sortByUrgency(items, now)).toEqual(reference);
     });
     it("égalité de score : échéance la plus proche d'abord", () => {
         const a = hw({ title: "B", dueDate: "2026-12-10", anticipationDays: 0 });

@@ -226,7 +226,7 @@ describe("Entrées invalides", () => {
         expect(warnings.join(" ")).toMatch(/tronqué|incomplet/);
     });
     it("BOM UTF-8 accepté", () => {
-        expect(parseTimetable("﻿" + realIcs).events).toHaveLength(278);
+        expect(parseTimetable("\uFEFF" + realIcs).events).toHaveLength(278);
     });
 });
 

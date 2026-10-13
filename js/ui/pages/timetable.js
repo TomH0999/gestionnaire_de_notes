@@ -148,10 +148,11 @@ export function createTimetablePage(ctx) {
             const placed = layoutOverlaps(list.filter((e) => !e.allDay));
             const nowLine =
                 day === today && parisMinutesOfDay(now) >= startHour * 60 && parisMinutesOfDay(now) <= endHour * 60
-                    ? html`<div class="edt-now absolute left-0 right-0 z-20 pointer-events-none" style="top: calc(${(parisMinutesOfDay(now) - startHour * 60) / 60} * var(--edt-hour))" aria-hidden="true"><span class="block h-0.5 bg-rose-500"></span></div>`
+                    ? html`<div class="edt-now absolute left-0 right-0 pointer-events-none" style="top: calc(${(parisMinutesOfDay(now) - startHour * 60) / 60} * var(--edt-hour))" aria-hidden="true"><span class="block h-0.5 bg-rose-500/80"></span><span class="absolute -left-1 -top-1 w-2.5 h-2.5 rounded-full bg-rose-500"></span></div>`
                     : "";
             return html`<div class="edt-day relative border-l border-slate-800 ${raw(day === today ? "bg-brand-500/5" : "")}" style="height: calc(${totalHours} * var(--edt-hour))" data-day="${day}">
                 ${hours.map((h) => html`<div class="absolute left-0 right-0 border-t border-slate-800/70" style="top: calc(${h - startHour} * var(--edt-hour))" aria-hidden="true"></div>`)}
+                ${nowLine}
                 ${placed.map(({ event: e, col, cols: n }) => {
                     const startMin = parisMinutesOfDay(e.start);
                     const endMin = parisDayKey(e.end) !== day ? 24 * 60 : parisMinutesOfDay(e.end);
@@ -169,7 +170,6 @@ export function createTimetablePage(ctx) {
                         <span class="edt-event-room block text-slate-300 truncate">${e.room}${e.type ? ` · ${e.type}` : ""}</span>
                     </button>`;
                 })}
-                ${nowLine}
             </div>`;
         };
 

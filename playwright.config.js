@@ -45,6 +45,11 @@ export default defineConfig({
             name: "production",
             testMatch: /production\.spec\.js/,
             use: { ...devices["Desktop Chrome"], baseURL: `http://127.0.0.1:${STATIC_PORT}/gestionnaire_de_notes/` }
+        },
+        {
+            name: "production-iphone",
+            testMatch: /production\.spec\.js/,
+            use: { ...devices["iPhone 13"], baseURL: `http://127.0.0.1:${STATIC_PORT}/gestionnaire_de_notes/` }
         }
     ],
     webServer: [

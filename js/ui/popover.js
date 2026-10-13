@@ -48,19 +48,38 @@ export function closePopover() {
     current = null;
 }
 
-/** Calcule la position (exportée pour les tests unitaires). */
-export function computePosition(triggerRect, tipSize, viewport) {
-    const spaceBelow = viewport.height - triggerRect.bottom - GAP - MARGIN;
-    const spaceAbove = triggerRect.top - GAP - MARGIN;
-    const placeBelow = spaceBelow >= Math.min(tipSize.height, 240) || spaceBelow >= spaceAbove;
-    const maxHeight = Math.max(120, placeBelow ? spaceBelow : spaceAbove);
+/**
+ * Calcule la position (exportée pour les tests unitaires).
+ * `insets` : zones occupées par l'en-tête collant (haut) et la barre d'onglets fixe (bas).
+ * Côté choisi : celui où l'infobulle tient entièrement, sinon le plus spacieux.
+ */
+export function computePosition(triggerRect, tipSize, viewport, insets = { top: 0, bottom: 0 }) {
+    const minTop = insets.top + MARGIN;
+    const maxBottom = viewport.height - insets.bottom - MARGIN;
+    const spaceBelow = maxBottom - triggerRect.bottom - GAP;
+    const spaceAbove = triggerRect.top - GAP - minTop;
+    const fitsBelow = spaceBelow >= tipSize.height;
+    const fitsAbove = spaceAbove >= tipSize.height;
+    const placeBelow = fitsBelow || (!fitsAbove && spaceBelow >= spaceAbove);
+    const available = Math.max(0, maxBottom - minTop);
+    const maxHeight = Math.min(available, Math.max(120, placeBelow ? spaceBelow : spaceAbove));
     const height = Math.min(tipSize.height, maxHeight);
     const width = Math.min(tipSize.width, viewport.width - 2 * MARGIN);
     let left = triggerRect.left + triggerRect.width / 2 - width / 2;
     left = Math.max(MARGIN, Math.min(left, viewport.width - width - MARGIN));
     let top = placeBelow ? triggerRect.bottom + GAP : triggerRect.top - GAP - height;
-    top = Math.max(MARGIN, Math.min(top, viewport.height - height - MARGIN));
+    top = Math.max(minTop, Math.min(top, maxBottom - height));
     return { left, top, maxHeight, width, placement: placeBelow ? "bottom" : "top" };
+}
+
+/** Hauteur masquée par l'en-tête collant et la barre d'onglets (mobile), si visibles. */
+function fixedInsets() {
+    const header = document.querySelector("body > div header, header");
+    const tabbar = document.getElementById("tabbar");
+    const top = header && getComputedStyle(header).position === "sticky" ? Math.max(0, header.getBoundingClientRect().bottom) : 0;
+    // (offsetParent est toujours null pour un élément fixe : on teste l'affichage calculé)
+    const bottom = tabbar && getComputedStyle(tabbar).display !== "none" ? tabbar.getBoundingClientRect().height : 0;
+    return { top, bottom };
 }
 
 function position(state) {
@@ -73,7 +92,7 @@ function position(state) {
     tip.style.left = "0px";
     tip.style.top = "0px";
     const size = { width: tip.offsetWidth, height: tip.scrollHeight };
-    const p = computePosition(rect, size, { width: vw, height: vh });
+    const p = computePosition(rect, size, { width: vw, height: vh }, fixedInsets());
     tip.style.maxHeight = `${p.maxHeight}px`;
     tip.style.left = `${Math.round(p.left)}px`;
     tip.style.top = `${Math.round(p.top)}px`;

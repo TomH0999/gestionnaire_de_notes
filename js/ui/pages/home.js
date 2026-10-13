@@ -303,7 +303,7 @@ export function createHomePage(ctx) {
                 showFieldErrors(hwForm, {});
                 ctx.repo().create("homework", { ...v.value, createdAt: Date.now() });
                 hwForm.elements.title.value = "";
-                ctx.toast(`« ${v.value.title} » ajouté pour le ${formatRelativeDay(v.value.dueDate, parisDayKey(ctx.now())).toLowerCase()}.`);
+                ctx.toast(`« ${v.value.title} » ajouté — échéance ${formatRelativeDay(v.value.dueDate, parisDayKey(ctx.now())).toLowerCase()} à ${v.value.dueTime}.`);
             });
             on(el, "change", "[data-action=toggle-done]", (e, box) => {
                 if (!box.checked) return;

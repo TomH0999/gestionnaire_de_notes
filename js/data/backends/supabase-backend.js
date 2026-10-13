@@ -233,7 +233,7 @@ export class SupabaseBackend {
 
     async fetchTimetable({ url, from, to }) {
         this.requireUser();
-        let token = null;
+        let token;
         try {
             const { data } = await this.client.auth.getSession();
             token = data && data.session ? data.session.access_token : null;
@@ -253,7 +253,7 @@ export class SupabaseBackend {
         }
         const text = await response.text();
         if (response.ok) return text;
-        let detail = null;
+        let detail;
         try {
             detail = JSON.parse(text);
         } catch {

@@ -106,6 +106,13 @@ test.describe("Détail du calcul des UE (infobulle)", () => {
             expect(box.y).toBeGreaterThanOrEqual(0);
             expect(box.x + box.width).toBeLessThanOrEqual(vp.width + 0.5);
             expect(box.y + box.height).toBeLessThanOrEqual(vp.height + 0.5);
+            if (isMobile()) {
+                // Jamais sous la barre d'onglets ni sous l'en-tête collant
+                const tab = await page.locator("#tabbar").boundingBox();
+                const header = await page.locator("header").boundingBox();
+                expect(box.y + box.height).toBeLessThanOrEqual(tab.y + 0.5);
+                expect(box.y).toBeGreaterThanOrEqual(header.y + header.height - 0.5);
+            }
             if (code === "UE 1.1") {
                 await expect(tip).toContainText("SAE 1.01");
                 await expect(tip).toContainText("R1.02");

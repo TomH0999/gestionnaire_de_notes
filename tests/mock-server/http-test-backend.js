@@ -142,7 +142,7 @@ export class HttpTestBackend {
         }
         const text = await res.text();
         if (res.ok) return text;
-        let detail = {};
+        let detail;
         try {
             detail = JSON.parse(text);
         } catch {

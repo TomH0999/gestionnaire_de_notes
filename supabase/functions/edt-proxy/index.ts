@@ -171,7 +171,7 @@ export async function handleRequest(req: Request, deps: Deps): Promise<Response>
         return json(502, { code: "upstream", message: `La source ADE a répondu avec une erreur (HTTP ${upstream.status}).` }, cors);
     }
     if (text.length > MAX_BYTES) return json(502, { code: "too-large", message: "Réponse ADE anormalement volumineuse." }, cors);
-    if (!/^﻿?\s*BEGIN:VCALENDAR/i.test(text)) {
+    if (!/^\uFEFF?\s*BEGIN:VCALENDAR/i.test(text)) {
         return json(502, { code: "format", message: "La source ADE n'a pas renvoyé de calendrier : le lien a peut-être expiré ou le format a changé." }, cors);
     }
     const entry = { at: now, body: text };

@@ -158,6 +158,19 @@ export function monthGrid(year, month) {
 
 // ---------- Ponts instants ↔ dates calendaires (Paris) ----------
 
+// Les conversions date calendaire → instant sont pures : mises en cache (tri de centaines de
+// devoirs, grilles de calendrier), sans effet sur les résultats.
+const instantCache = new Map();
+function cachedInstant(cacheKey, compute) {
+    let value = instantCache.get(cacheKey);
+    if (value === undefined) {
+        value = compute();
+        if (instantCache.size > 20000) instantCache.clear();
+        instantCache.set(cacheKey, value);
+    }
+    return value;
+}
+
 export function parisDayKey(ms) {
     const p = zonedParts(ms);
     return dayKey(p.year, p.month, p.day);
@@ -165,9 +178,11 @@ export function parisDayKey(ms) {
 
 /** Instant de minuit (heure de Paris) au début d'une date calendaire. */
 export function parisStartOfDay(key) {
-    const p = parseDayKey(key);
-    if (!p) throw new RangeError(`Date invalide : ${key}`);
-    return zonedTimeToUtc(p.year, p.month, p.day, 0, 0, 0);
+    return cachedInstant(`d|${key}`, () => {
+        const p = parseDayKey(key);
+        if (!p) throw new RangeError(`Date invalide : ${key}`);
+        return zonedTimeToUtc(p.year, p.month, p.day, 0, 0, 0);
+    });
 }
 
 export function parseTime(value) {
@@ -181,10 +196,12 @@ export function parseTime(value) {
 }
 
 export function parisInstant(key, time = "00:00") {
-    const p = parseDayKey(key);
-    const t = parseTime(time);
-    if (!p || !t) return NaN;
-    return zonedTimeToUtc(p.year, p.month, p.day, t.hour, t.minute, 0);
+    return cachedInstant(`i|${key}|${time}`, () => {
+        const p = parseDayKey(key);
+        const t = parseTime(time);
+        if (!p || !t) return NaN;
+        return zonedTimeToUtc(p.year, p.month, p.day, t.hour, t.minute, 0);
+    });
 }
 
 export function parisTime(ms) {

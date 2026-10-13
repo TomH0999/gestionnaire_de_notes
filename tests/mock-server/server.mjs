@@ -53,7 +53,8 @@ reset();
 const TEST_CONFIG = `window.GDN_CONFIG = { testBackend: { module: "tests/mock-server/http-test-backend.js", baseUrl: "__test/api" } };\n`;
 
 function send(res, status, body, headers = {}) {
-    res.writeHead(status, { "Cache-Control": "no-store", ...headers });
+    const hasCacheControl = Object.keys(headers).some((k) => k.toLowerCase() === "cache-control");
+    res.writeHead(status, hasCacheControl ? headers : { "Cache-Control": "no-store", ...headers });
     res.end(body);
 }
 const json = (res, status, obj) => send(res, status, JSON.stringify(obj), { "Content-Type": "application/json; charset=utf-8" });
@@ -201,13 +202,18 @@ async function handleControl(req, res, sub) {
     return json(res, 404, { message: "contrôle inconnu" });
 }
 
+// Simulation d'une nouvelle publication (test de mise à jour du service worker) : la
+// constante VERSION de sw.js servi est remplacée. Fichiers du dépôt jamais modifiés.
+let swVersionOverride = null;
+
 async function serveFile(req, res, relPath) {
     let rel = decodeURIComponent(relPath);
     if (rel === "" || rel.endsWith("/")) rel += "index.html";
     const file = path.resolve(root, rel);
     if (!file.startsWith(root + path.sep) || rel.includes("node_modules") || rel.startsWith(".git")) return send(res, 403, "Interdit");
     if (!existsSync(file)) return send(res, 404, "Introuvable", { "Content-Type": "text/plain; charset=utf-8" });
-    const data = await readFile(file);
+    let data = await readFile(file);
+    if (rel === "sw.js" && swVersionOverride) data = Buffer.from(data.toString("utf8").replace(/const VERSION = "[^"]+";/, `const VERSION = "${swVersionOverride}";`));
     send(res, 200, data, { "Content-Type": MIME[path.extname(file)] || "application/octet-stream", "Cache-Control": "max-age=600" });
 }
 
@@ -216,6 +222,10 @@ const httpServer = http.createServer(async (req, res) => {
         const origin = `http://${req.headers.host}`;
         const url = new URL(req.url, origin);
         if (url.pathname === "/" || url.pathname === BASE.slice(0, -1)) return send(res, 302, "", { Location: BASE });
+        if (url.pathname === "/__test/control/sw-version") {
+            swVersionOverride = url.searchParams.get("v") || null;
+            return json(res, 200, { ok: true, version: swVersionOverride });
+        }
         if (!STATIC_ONLY) {
             if (url.pathname.startsWith("/__test/api/")) return handleApi(req, res, url, url.pathname.slice("/__test/api/".length));
             if (url.pathname.startsWith(`${BASE}__test/api/`)) return handleApi(req, res, url, url.pathname.slice(`${BASE}__test/api/`.length));

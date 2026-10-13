@@ -145,10 +145,13 @@ export function createApp({ store, controller, timetable, version }) {
     async function registerServiceWorker() {
         if (!("serviceWorker" in navigator)) return;
         try {
-            const hadController = !!navigator.serviceWorker.controller;
+            // Première installation : le service worker prend le contrôle sans changer de version
+            // (pas de bannière). Tout changement de contrôleur ultérieur = nouvelle version publiée.
+            let hadController = !!navigator.serviceWorker.controller;
             registration = await navigator.serviceWorker.register("sw.js", { updateViaCache: "none" });
             navigator.serviceWorker.addEventListener("controllerchange", () => {
                 if (hadController) promptReload();
+                hadController = true;
             });
         } catch (e) {
             console.warn("Service worker non enregistré :", e && e.message);

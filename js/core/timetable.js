@@ -154,7 +154,7 @@ export function parseICS(text) {
     if (text.length > MAX_INPUT_LENGTH) {
         throw new TimetableFormatError("L'emploi du temps reçu est anormalement volumineux.", "too-large");
     }
-    const clean = text.replace(/^﻿/, "");
+    const clean = text.replace(/^\uFEFF/, "");
     if (!/^\s*BEGIN:VCALENDAR/i.test(clean)) {
         const looksHtml = /<html|<!doctype|<body/i.test(clean);
         throw new TimetableFormatError(

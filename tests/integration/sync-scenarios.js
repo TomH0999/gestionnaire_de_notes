@@ -5,7 +5,7 @@
  * `makeEnv()` fournit { server?, clock, backendFactory?, cleanup? }.
  */
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
-import { createDevice, settle, syncAll, byName } from "./helpers.js";
+import { createDevice, settle, syncAll } from "./helpers.js";
 import { SAMPLE_GRADES } from "../../js/data/migration.js";
 
 const grade = (name, over = {}) => ({ name, subjectCode: "R1.01", score: 12, max: 20, coeff: 1, createdAt: Date.now(), ...over });

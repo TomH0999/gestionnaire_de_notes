@@ -94,7 +94,7 @@ export class SyncController {
     async init() {
         if (!this.backend) return this.getState();
         this.unsubAuth = this.backend.onAuthChange((event, session) => this.handleAuthEvent(event, session));
-        let session = null;
+        let session;
         try {
             session = await this.backend.getSession();
         } catch {

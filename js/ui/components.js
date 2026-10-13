@@ -51,6 +51,9 @@ export function ueDetailContent(subjectAverages, ueCode) {
     const result = formatAverage(b.result);
     return html`<div class="text-xs text-slate-300">
         <p class="font-semibold text-white text-sm">${b.ueCode} — ${b.ueName}</p>
+        <p class="mt-1 text-slate-300">Moyenne de l'UE : <strong class="text-white text-sm font-mono" data-ue-detail-result>${result}</strong>${
+            b.result === null ? "" : html` <span class="text-slate-500">(Σ produits ÷ Σ coefficients)</span>`
+        }</p>
         <table class="w-full mt-2 border-collapse">
             <thead><tr class="text-[10px] uppercase tracking-wider text-slate-500">
                 <th scope="col" class="text-left font-semibold py-1 pr-2">Ressource / SAÉ</th>
@@ -73,7 +76,7 @@ export function ueDetailContent(subjectAverages, ueCode) {
                 : html`<div class="mt-2 pt-2 border-t border-slate-700 space-y-0.5 font-mono">
                       <p>Σ produits = <span class="text-slate-100">${formatNumber(b.weightedSum)}</span></p>
                       <p>Σ coefficients = <span class="text-slate-100">${b.totalCoeffs}</span>${b.totalCoeffs !== b.totalProgramCoeffs ? html` <span class="text-slate-500">(sur ${b.totalProgramCoeffs})</span>` : ""}</p>
-                      <p class="pt-1">Moyenne = Σ produits ÷ Σ coeff. = ${formatNumber(b.weightedSum)} ÷ ${b.totalCoeffs} = <strong class="text-white text-sm" data-ue-detail-result>${result}</strong></p>
+                      <p class="pt-1">Moyenne = Σ produits ÷ Σ coeff. = ${formatNumber(b.weightedSum)} ÷ ${b.totalCoeffs} = <strong class="text-white text-sm" data-ue-detail-formula-result>${result}</strong></p>
                   </div>`
         }
         ${
