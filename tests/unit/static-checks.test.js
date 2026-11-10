@@ -83,7 +83,7 @@ describe("Service worker", () => {
             },
             caches: {
                 open: async () => ({ addAll: async (reqs) => added.push(...reqs), put: async () => {} }),
-                keys: async () => ["gdn-static-1.9.0", "but1-notes-s1-v3", "gdn-static-2.0.0", "autre-projet-github-pages", "workbox-precache-v2"],
+                keys: async () => ["gdn-static-1.9.0", "but1-notes-s1-v3", `gdn-static-${/const VERSION = "([^"]+)"/.exec(swSource)[1]}`, "autre-projet-github-pages", "workbox-precache-v2"],
                 delete: async (name) => deleted.push(name),
                 match: async () => null
             },

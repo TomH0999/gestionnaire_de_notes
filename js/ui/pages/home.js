@@ -84,7 +84,7 @@ export function createHomePage(ctx) {
                     <p data-error-for="coeff" class="text-xs text-rose-400" hidden></p>
                     <div>
                         <label for="quick-grade-name" class="${raw(LABEL_CLASS)}">Nom <span class="text-slate-600">(facultatif)</span></label>
-                        <input id="quick-grade-name" name="name" type="text" maxlength="120" autocomplete="off" placeholder="Note rapide" class="${raw(INPUT_CLASS)}">
+                        <input id="quick-grade-name" name="name" type="text" maxlength="120" autocomplete="off" placeholder="Note n (automatique)" class="${raw(INPUT_CLASS)}">
                     </div>
                     <button type="submit" class="w-full bg-brand-600 hover:bg-brand-500 text-white font-medium py-2 min-h-[44px] rounded-lg text-sm transition shadow-lg shadow-brand-600/20 flex items-center justify-center gap-2">
                         <i class="fa-solid fa-plus" aria-hidden="true"></i> Ajouter la note
@@ -282,7 +282,9 @@ export function createHomePage(ctx) {
                 event.preventDefault();
                 const values = formValues(gradeForm);
                 const subjectLabelText = subjectName(values.subjectCode) || values.subjectCode;
-                const v = validateGradeInput(values, { defaultName: `Note rapide du ${new Date(ctx.now()).toLocaleDateString("fr-FR", { timeZone: "Europe/Paris" })}` });
+                // Nom facultatif : numéro attribué automatiquement (Note 3 s'il y a déjà 2 notes dans la matière), renommable plus tard
+                const rank = ctx.repo().grades().filter((g) => g.subjectCode === values.subjectCode).length + 1;
+                const v = validateGradeInput(values, { defaultName: `Note ${rank}` });
                 if (!v.ok) return showFieldErrors(gradeForm, v.errors);
                 showFieldErrors(gradeForm, {});
                 ctx.repo().create("grades", { ...v.value, createdAt: Date.now() });

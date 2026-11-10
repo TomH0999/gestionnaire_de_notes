@@ -2,10 +2,18 @@
  * Version de production : site servi en statique comme sur GitHub Pages (même sous-chemin,
  * cache HTTP de 10 min, VRAI config.js vide = mode local), service worker actif.
  */
+import { readFileSync } from "node:fs";
 import { test, expect, openApp, expectNoHorizontalOverflow, shot } from "./helpers.js";
 
 test.use({ serviceWorkers: "allow" });
 const STATIC_ORIGIN = "http://127.0.0.1:4311";
+const CACHE = `gdn-static-${/const VERSION = "([^"]+)"/.exec(readFileSync(new URL("../../sw.js", import.meta.url), "utf8"))[1]}`;
+
+// Le vrai config.js contient maintenant le projet Supabase : ces tests vérifient le mode
+// local (sans appel réseau réel) en servant une configuration vide.
+test.beforeEach(async ({ context }) => {
+    await context.route("**/config.js", (route) => route.fulfill({ contentType: "text/javascript", body: 'window.GDN_CONFIG = { supabaseUrl: "", supabaseKey: "" };' }));
+});
 
 async function waitForController(page) {
     await page.evaluate(() => navigator.serviceWorker.ready);
@@ -18,6 +26,8 @@ const goHash = (page, hash) =>
         location.hash = h;
     }, hash);
 
+test.describe("sans service worker (WebKit ne fait pas passer ses requêtes par la configuration simulée)", () => {
+    test.use({ serviceWorkers: "block" });
 test("mode local (Supabase non configuré) : tout fonctionne sur l'appareil, sans erreur", async ({ page, problems }) => {
     await openApp(page);
     await expect(page.locator("[data-sync-state=local]:visible").first()).toBeVisible();
@@ -40,6 +50,8 @@ test("mode local (Supabase non configuré) : tout fonctionne sur l'appareil, san
     expect(problems).toEqual([]);
 });
 
+});
+
 test("PWA : l'application se charge hors-ligne après une première visite (toutes les pages)", async ({ page, context, problems }) => {
     await openApp(page);
     await waitForController(page);
@@ -47,7 +59,7 @@ test("PWA : l'application se charge hors-ligne après une première visite (tout
     await page.locator("#grade-name").fill("Avant coupure");
     await page.locator("#grade-score").fill("12");
     await page.locator("#add-grade-form").getByRole("button", { name: "Ajouter" }).click();
-    expect(await page.evaluate(() => caches.keys())).toEqual(["gdn-static-2.0.0"]);
+    expect(await page.evaluate(() => caches.keys())).toEqual([CACHE]);
     await context.setOffline(true);
     await page.reload();
     await expect(page.locator("html[data-ready=true]")).toHaveCount(1);
@@ -68,7 +80,7 @@ test("PWA : l'application se charge hors-ligne après une première visite (tout
 test("mise à jour du service worker : la nouvelle version remplace l'ancienne", async ({ page, request, problems }) => {
     await openApp(page);
     await waitForController(page);
-    expect(await page.evaluate(() => caches.keys())).toEqual(["gdn-static-2.0.0"]);
+    expect(await page.evaluate(() => caches.keys())).toEqual([CACHE]);
     // Nouvelle publication : sw.js change (VERSION incrémentée)
     await request.get(`${STATIC_ORIGIN}/__test/control/sw-version?v=2.0.1-test`);
     try {

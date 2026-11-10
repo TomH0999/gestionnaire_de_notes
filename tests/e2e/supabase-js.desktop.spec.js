@@ -147,7 +147,7 @@ test("supabase-js réel : connexion, synchronisation (upsert, mise à jour condi
     const patch = calls.find((c) => c.method === "PATCH");
     const sp = new URLSearchParams(patch.search);
     expect(sp.get("id")).toBe(`eq.${inserted.id}`);
-    expect(sp.get("updated_at")).toMatch(/^eq\.2026-10-13T\d{2}:\d{2}:\d{2}\.\d{6}\+00:00$/);
+    expect(sp.get("updated_at")).toMatch(/^eq\.\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{6}\+00:00$/);
     expect(JSON.parse(patch.body)).not.toHaveProperty("user_id");
 
     // Suppression logique : PATCH avec deleted_at

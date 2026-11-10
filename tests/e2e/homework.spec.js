@@ -11,7 +11,7 @@ async function addItem(page, { title, type, date, time = null, importance = null
     if (subject) await dialog.locator("#hw-subject").selectOption(subject);
     await dialog.locator("#hw-date").fill(date);
     if (time) await dialog.locator("#hw-time").fill(time);
-    if (importance) await dialog.locator(`input[name=importance][value="${importance}"]`).check({ force: true });
+    if (importance) await dialog.locator(`label.importance-option:has(input[value="${importance}"])`).click();
     if (anticipation !== null) await dialog.locator("#hw-anticipation").selectOption(String(anticipation));
     await dialog.getByRole("button", { name: "Enregistrer" }).click();
     await expect(dialog).toHaveCount(0);
@@ -32,7 +32,7 @@ test("valeurs par défaut selon le type (SAÉ = haute + 2 semaines), modifiables
     await expect(dialog.locator("#hw-anticipation")).toHaveValue("7");
     await expect(dialog.locator("#hw-time")).toHaveValue("08:00");
     // Une valeur modifiée à la main n'est plus écrasée par le changement de type
-    await dialog.locator("input[name=importance][value='1']").check({ force: true });
+    await dialog.locator("label.importance-option:has(input[value='1'])").click();
     await dialog.locator("#hw-type").selectOption("sae");
     await expect(dialog.locator("input[name=importance][value='1']")).toBeChecked();
     await dialog.locator("#hw-date").fill("2026-10-16");
@@ -92,7 +92,7 @@ test("vue Liste : tri par urgence, fait / à faire, modification, suppression et
     await page.locator("#hw-filter").selectOption("todo");
     // Modification : importance → Critique
     await tapOrClick(page.getByRole("button", { name: "Modifier SAE lointaine" }));
-    await page.getByRole("dialog").locator("input[name=importance][value='4']").check({ force: true });
+    await page.getByRole("dialog").locator("label.importance-option:has(input[value='4'])").click();
     await page.getByRole("dialog").getByRole("button", { name: "Enregistrer" }).click();
     await expect(page.locator("[data-hw-list] li").filter({ hasText: "SAE lointaine" })).toContainText("Critique");
     // Suppression avec confirmation puis annulation

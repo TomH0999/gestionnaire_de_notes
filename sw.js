@@ -11,7 +11,7 @@
  *  - config.js : réseau d'abord (une modification de configuration arrive sans changer VERSION) ;
  *  - Supabase et tout autre domaine : jamais interceptés (données gérées par l'application).
  */
-const VERSION = "2.0.0";
+const VERSION = "2.0.1";
 const CACHE_PREFIX = "gdn-static-";
 const CACHE_NAME = `${CACHE_PREFIX}${VERSION}`;
 // Anciens caches de la version d'origine (même origine, à supprimer) — jamais ceux des autres sites
