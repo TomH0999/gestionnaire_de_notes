@@ -1,7 +1,9 @@
 /** Fragments d'interface partagés (mêmes classes que la version d'origine). */
 import { html, raw } from "../core/escape.js";
-import { PROGRAM_S1, subjectName } from "../core/program.js";
+import { subjectName } from "../core/program.js";
 import { computeUeBreakdown, formatAverage } from "../core/grades-calc.js";
+import { semesterSubjects, semesterOfSubject, subjectInfo } from "../core/curriculum.js";
+import { moduleUeBreakdown } from "../core/semester-calc.js";
 import { formatNumber } from "../core/numbers.js";
 import { importanceLevel, homeworkType, STATES, IMPORTANCE_LEVELS } from "../core/homework.js";
 
@@ -18,13 +20,20 @@ export function averageBadge(avg, { suffix = "", empty = "--" } = {}) {
     return html`<span class="text-xs font-bold font-mono px-2 py-0.5 rounded border ${raw(colorClass)}">${formatAverage(avg)}${suffix}</span>`;
 }
 
-/** Options « Matière / SAÉ » groupées (mêmes libellés que l'origine). */
-export function subjectOptions(selected = null, { allowNone = false, noneLabel = "Aucune matière" } = {}) {
+/**
+ * Options « Matière / SAÉ » du semestre affiché, groupées (ressources puis SAÉ, stage,
+ * portfolio). Une matière déjà choisie d'un autre semestre reste proposée, à part.
+ */
+export function subjectOptions(selected = null, { allowNone = false, noneLabel = "Aucune matière", semester = 1, parcours = null } = {}) {
+    const list = semesterSubjects(semester, parcours);
+    const option = (s) => html`<option value="${s.code}" ${raw(s.code === selected ? "selected" : "")}>${s.code} - ${s.name}</option>`;
+    const ressources = list.filter((s) => s.kind === "ressource");
+    const others = list.filter((s) => s.kind !== "ressource");
+    const outside = selected && !list.some((s) => s.code === selected) ? subjectInfo(selected) : null;
     return html`${allowNone ? html`<option value="" ${raw(!selected ? "selected" : "")}>${noneLabel}</option>` : ""}
-        <optgroup label="Ressources (Matières)">${PROGRAM_S1.ressources.map(
-            (r) => html`<option value="${r.code}" ${raw(r.code === selected ? "selected" : "")}>${r.code} - ${r.name}</option>`
-        )}</optgroup>
-        <optgroup label="SAÉ">${PROGRAM_S1.saes.map((s) => html`<option value="${s.code}" ${raw(s.code === selected ? "selected" : "")}>${s.code} - ${s.name}</option>`)}</optgroup>`;
+        <optgroup label="Ressources (Matières) — S${semester}">${ressources.map(option)}</optgroup>
+        <optgroup label="${semester === 1 ? "SAÉ" : "SAÉ, stage et portfolio"} — S${semester}">${others.map(option)}</optgroup>
+        ${outside ? html`<optgroup label="Semestre ${semesterOfSubject(selected)}">${option(outside)}</optgroup>` : ""}`;
 }
 
 /** Carte d'UE cliquable (bouton) avec infobulle de détail. */
@@ -44,7 +53,9 @@ export function ueCard(ue, avg, { compact = false } = {}) {
  * Contenu de l'infobulle : ressources et SAÉ de l'UE avec moyenne, coefficient et produit,
  * puis sommes, formule et résultat (même valeur, même arrondi que la carte).
  */
-export function ueDetailContent(subjectAverages, ueCode) {
+export function ueDetailContent(data, ueCode) {
+    if (data.semester !== 1) return moduleUeDetailContent(data, ueCode);
+    const subjectAverages = data.subjectAverages;
     const b = computeUeBreakdown(subjectAverages, ueCode);
     if (!b) return html``;
     const missing = b.rows.filter((r) => !r.counted);
@@ -84,6 +95,45 @@ export function ueDetailContent(subjectAverages, ueCode) {
                 ? html`<p class="mt-2 text-[11px] text-slate-400"><i class="fa-solid fa-circle-info" aria-hidden="true"></i> Matières sans note (${missing.map((m) => m.code).join(", ")}) : ignorées, exclues du numérateur et du dénominateur (règle actuelle).</p>`
                 : ""
         }
+    </div>`;
+}
+
+/** Détail d'une UE des semestres 2 à 6 : modules (SAÉ / ressources), coefficients, résultat. */
+function moduleUeDetailContent(data, ueCode) {
+    const ue = data.ues.find((u) => u.code === ueCode);
+    if (!ue) return html``;
+    const b = moduleUeBreakdown(ue, data.subjectAverages);
+    const result = formatAverage(b.result);
+    const moduleTitle = (m) => (m.rows.some((r) => !/^R\d/.test(r.code)) ? "SAÉ, stage, portfolio" : "Ressources");
+    return html`<div class="text-xs text-slate-300">
+        <p class="font-semibold text-white text-sm">${b.ueCode} — ${b.ueName}</p>
+        <p class="mt-1 text-slate-300">Moyenne de l'UE : <strong class="text-white text-sm font-mono" data-ue-detail-result>${result}</strong>${
+            b.result === null ? "" : html` <span class="text-slate-500">(moyenne des modules pondérée)</span>`
+        }</p>
+        ${b.modules.map(
+            (m) => html`<table class="w-full mt-2 border-collapse">
+                <thead><tr class="text-[10px] uppercase tracking-wider text-slate-500">
+                    <th scope="col" class="text-left font-semibold py-1 pr-2">${moduleTitle(m)} <span class="normal-case">(module, coeff. ${m.coef})</span></th>
+                    <th scope="col" class="text-right font-semibold py-1 px-1">Moy.</th>
+                    <th scope="col" class="text-right font-semibold py-1 pl-1">Coeff.</th>
+                </tr></thead>
+                <tbody>${m.rows.map(
+                    (r) => html`<tr class="border-t border-slate-800 ${raw(r.counted ? "" : "text-slate-500")}">
+                        <td class="py-1 pr-2"><span class="font-semibold ${raw(r.counted ? "text-brand-400" : "")}">${r.code}</span> <span class="hidden sm:inline">${r.name}</span></td>
+                        <td class="py-1 px-1 text-right font-mono">${r.counted ? formatAverage(r.average) : "sans note"}</td>
+                        <td class="py-1 pl-1 text-right font-mono">${formatNumber(r.coeff)}</td>
+                    </tr>`
+                )}
+                <tr class="border-t border-slate-700"><td class="py-1 pr-2 text-slate-400">Moyenne du module</td><td class="py-1 px-1 text-right font-mono text-slate-100">${formatAverage(m.average)}</td><td></td></tr>
+                </tbody>
+            </table>`
+        )}
+        ${
+            b.result === null
+                ? html`<p class="mt-2 text-slate-400">Aucune note dans cette UE pour l'instant : moyenne non calculée.</p>`
+                : html`<p class="mt-2 pt-2 border-t border-slate-700 font-mono">Moyenne = Σ (module × coeff.) ÷ Σ coeff. = ${formatNumber(b.weightedSum)} ÷ ${formatNumber(b.totalCoeffs)} = <strong class="text-white text-sm" data-ue-detail-formula-result>${result}</strong></p>`
+        }
+        <p class="mt-2 text-[11px] text-slate-400"><i class="fa-solid fa-circle-info" aria-hidden="true"></i> Coefficients des MCCC de l'IUT. Matières et modules sans note : ignorés.</p>
     </div>`;
 }
 

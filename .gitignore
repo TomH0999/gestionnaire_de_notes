@@ -20,3 +20,6 @@ supabase/.branches/
 
 # Réglages locaux d'outils (aperçu Claude Code, etc.)
 .claude/
+
+# Configuration Playwright locale (navigateur de l environnement)
+playwright.local.config.js

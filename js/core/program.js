@@ -1,3 +1,5 @@
+import { isKnownSubjectCode, subjectInfo } from "./curriculum.js";
+
 /**
  * Configuration & Coefficients BUT1 Informatique S1
  * (repris à l'identique de la version d'origine — script.js)
@@ -45,17 +47,16 @@ export const COEFFICIENTS_UE = {
     "UE 1.6": { "SAE 1.06": 40, "R1.02": 5, "R1.08": 11, "R1.09": 11, "R1.10": 11, "R1.11": 11, "R1.12": 11 }
 };
 
-/** Toutes les matières notables (ressources puis SAÉ), dans l'ordre du programme. */
+/** Toutes les matières notables du S1 (ressources puis SAÉ), dans l'ordre du programme. */
 export const ALL_SUBJECTS = [...PROGRAM_S1.ressources, ...PROGRAM_S1.saes];
 
-const SUBJECT_BY_CODE = new Map(ALL_SUBJECTS.map((s) => [s.code, s]));
-
+/** Matière connue, quel que soit le semestre (S1 à S6, voir curriculum.js). */
 export function isKnownSubject(code) {
-    return SUBJECT_BY_CODE.has(code);
+    return isKnownSubjectCode(code);
 }
 
 export function subjectName(code) {
-    const s = SUBJECT_BY_CODE.get(code);
+    const s = subjectInfo(code);
     return s ? s.name : null;
 }
 

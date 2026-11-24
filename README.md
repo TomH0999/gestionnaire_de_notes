@@ -1,7 +1,13 @@
-# BUT1 Informatique — suivi de scolarité
+# BUT Informatique — suivi de scolarité
 
-Application personnelle (PWA) pour le BUT1 Informatique de l'IUT de Montpellier-Sète :
+Application personnelle (PWA) pour le BUT Informatique de l'IUT de Montpellier-Sète, du semestre 1 au semestre 6 :
 
+- **Semestres 1 à 6** : un sélecteur (S1 … S6) sur l'accueil, les notes et le tableau de bord ;
+  à partir du S4, choix du parcours (RACDV, DACS, IAMSI). Coefficients repris des MCCC 2025-2026
+  de l'IUT (site de Montpellier), calcul par modules comme dans les MCCC à partir du S2 ;
+- **Tableau de bord** : moyenne de chaque semestre, moyenne globale sur toute la scolarité,
+  moyenne par compétence (UE de tous les semestres), meilleures et moins bonnes matières,
+  évolution d'un semestre à l'autre, détail du semestre choisi ;
 - **Notes et moyennes** : même calcul, mêmes arrondis que la version d'origine (vérifié par
   des tests « golden »), saisie avec virgule ou point, détail du calcul de chaque UE au survol,
   au toucher ou au clavier ;

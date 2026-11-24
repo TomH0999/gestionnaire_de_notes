@@ -9,8 +9,10 @@
  *  6. raccourcis vers chaque fonctionnalité.
  */
 import { html, raw } from "../../core/escape.js";
-import { PROGRAM_S1, subjectName } from "../../core/program.js";
-import { calculateAllAverages, formatAverage } from "../../core/grades-calc.js";
+import { subjectName } from "../../core/program.js";
+import { formatAverage } from "../../core/grades-calc.js";
+import { computeSemester } from "../../core/semester-calc.js";
+import { semesterOfSubject } from "../../core/curriculum.js";
 import { validateGradeInput, validateHomeworkInput } from "../../core/validation.js";
 import { parisDayKey, formatLongDate, formatRelativeDay, parisTime, addDays, capitalize } from "../../core/dates.js";
 import { selectDoNow, computeState, defaultsForType, HOMEWORK_TYPES, IMPORTANCE_LEVELS } from "../../core/homework.js";
@@ -18,6 +20,7 @@ import { findCurrentAndNext, subjectColor } from "../../core/timetable.js";
 import { render, on, formValues, showFieldErrors } from "../dom.js";
 import { attachPopover, closePopover } from "../popover.js";
 import { syncPill } from "../sync-indicator.js";
+import { academicState, semesterSwitcher, wireSemesterSwitcher, parcoursNotice } from "../semester.js";
 import { ueCard, ueDetailContent, subjectOptions, importanceChip, stateChip, typeLabel, subjectLabel, emptyState, INPUT_CLASS, LABEL_CLASS, CARD_CLASS } from "../components.js";
 
 const SECTION_TITLE = "text-sm font-semibold uppercase tracking-wider text-slate-400 flex items-center gap-2";
@@ -25,9 +28,16 @@ const SECTION_TITLE = "text-sm font-semibold uppercase tracking-wider text-slate
 export function createHomePage(ctx) {
     let el = null;
     let lastData = null;
+    let optionsKey = null;
+
+    function quickSubject(academic) {
+        const last = ctx.repo().getSetting("lastSubject", null);
+        return last && semesterOfSubject(last) === academic.semester ? last : null;
+    }
 
     function skeleton() {
-        const last = ctx.repo().getSetting("lastSubject", "R1.01");
+        const academic = academicState(ctx.repo());
+        const last = quickSubject(academic);
         const tomorrow = addDays(parisDayKey(ctx.now()), 1);
         return html`<div class="space-y-6">
             <section class="${raw(CARD_CLASS)} relative overflow-hidden" aria-labelledby="home-date">
@@ -63,7 +73,7 @@ export function createHomePage(ctx) {
                     <h2 class="${raw(SECTION_TITLE)}"><i class="fa-solid fa-plus-circle text-brand-500" aria-hidden="true"></i> Ajouter une note</h2>
                     <div>
                         <label for="quick-grade-subject" class="${raw(LABEL_CLASS)}">Matière / SAÉ <span class="text-slate-600">(mémorisée)</span></label>
-                        <select id="quick-grade-subject" name="subjectCode" class="${raw(INPUT_CLASS)}">${subjectOptions(last)}</select>
+                        <select id="quick-grade-subject" name="subjectCode" class="${raw(INPUT_CLASS)}">${subjectOptions(last, academic)}</select>
                     </div>
                     <div class="grid grid-cols-3 gap-2">
                         <div>
@@ -125,14 +135,19 @@ export function createHomePage(ctx) {
             <section class="${raw(CARD_CLASS)}" aria-labelledby="home-ue-title">
                 <div class="flex items-center justify-between mb-4 gap-2">
                     <h2 id="home-ue-title" class="${raw(SECTION_TITLE)}"><i class="fa-solid fa-chart-pie text-brand-500" aria-hidden="true"></i> Moyennes d'UE</h2>
-                    <a href="#/notes" class="text-xs text-brand-400 hover:text-brand-100 min-h-[44px] inline-flex items-center">Toutes les notes <i class="fa-solid fa-chevron-right ml-1 text-[10px]" aria-hidden="true"></i></a>
+                    <span class="flex items-center gap-3">
+                        <a href="#/bilan" class="text-xs text-brand-400 hover:text-brand-100 min-h-[44px] inline-flex items-center">Tableau de bord</a>
+                        <a href="#/notes" class="text-xs text-brand-400 hover:text-brand-100 min-h-[44px] inline-flex items-center">Toutes les notes <i class="fa-solid fa-chevron-right ml-1 text-[10px]" aria-hidden="true"></i></a>
+                    </span>
                 </div>
+                <div class="mb-4" data-home-switcher></div>
                 <div data-home-ue></div>
             </section>
 
-            <nav class="grid grid-cols-2 sm:grid-cols-4 gap-3" aria-label="Raccourcis">
+            <nav class="grid grid-cols-2 sm:grid-cols-5 gap-3" aria-label="Raccourcis">
                 ${[
                     ["#/notes", "fa-graduation-cap", "Notes", "Moyennes et évaluations"],
+                    ["#/bilan", "fa-chart-line", "Tableau de bord", "Statistiques S1 à S6"],
                     ["#/edt", "fa-calendar-week", "Emploi du temps", "Jour et semaine"],
                     ["#/devoirs", "fa-list-check", "Devoirs", "Calendrier et liste"],
                     ["#/reglages", "fa-gear", "Réglages", "Compte, EDT, sauvegarde"]
@@ -233,8 +248,23 @@ export function createHomePage(ctx) {
 
     function renderUe() {
         const box = el.querySelector("[data-home-ue]");
-        const data = calculateAllAverages(ctx.repo().grades());
+        const academic = academicState(ctx.repo());
+        const data = computeSemester(ctx.repo().grades(), academic.semester, academic.parcours);
         lastData = data;
+        const slot = el.querySelector("[data-home-switcher]");
+        if (slot && !slot.contains(document.activeElement)) render(slot, semesterSwitcher(ctx.repo(), { id: "home-semester" }));
+        // Saisie rapide : la liste des matières suit le semestre affiché
+        const key = `${academic.semester}|${academic.parcours}`;
+        const select = el.querySelector("#quick-grade-subject");
+        if (select && key !== optionsKey && document.activeElement !== select) {
+            const keep = semesterOfSubject(select.value) === academic.semester ? select.value : quickSubject(academic);
+            render(select, subjectOptions(keep, academic));
+            optionsKey = key;
+        }
+        if (!data.available) {
+            render(box, parcoursNotice(academic.semester));
+            return;
+        }
         render(
             box,
             html`<div class="flex flex-wrap items-center gap-4 mb-4">
@@ -245,9 +275,9 @@ export function createHomePage(ctx) {
                     </div>
                     <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold border ${raw(data.statusClass)}">${data.status}</span>
                 </div>
-                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">${PROGRAM_S1.ues.map((ue) => ueCard(ue, data.ueAverages[ue.code]))}</div>`
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">${data.ues.map((ue) => ueCard(ue, data.ueAverages[ue.code]))}</div>`
         );
-        for (const btn of box.querySelectorAll("[data-ue]")) attachPopover(btn, () => ueDetailContent(lastData.subjectAverages, btn.dataset.ue));
+        for (const btn of box.querySelectorAll("[data-ue]")) attachPopover(btn, () => ueDetailContent(lastData, btn.dataset.ue));
     }
 
     function renderHeader() {
@@ -277,6 +307,11 @@ export function createHomePage(ctx) {
         mount(container) {
             el = container;
             render(el, skeleton());
+            optionsKey = (() => {
+                const a = academicState(ctx.repo());
+                return `${a.semester}|${a.parcours}`;
+            })();
+            wireSemesterSwitcher(el, ctx.repo());
             const gradeForm = el.querySelector("#quick-grade-form");
             gradeForm.addEventListener("submit", (event) => {
                 event.preventDefault();
@@ -329,7 +364,7 @@ export function createHomePage(ctx) {
             const date = el && el.querySelector("#quick-hw-date");
             if (date && !date.matches(":focus") && date.value < parisDayKey(ctx.now())) date.value = tomorrow;
             const sel = el && el.querySelector("#quick-grade-subject");
-            const last = ctx.repo().getSetting("lastSubject", null);
+            const last = quickSubject(academicState(ctx.repo()));
             if (sel && last && document.activeElement !== sel) sel.value = last;
             ctx.ensureTimetableFresh();
         },

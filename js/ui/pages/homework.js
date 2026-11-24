@@ -33,6 +33,7 @@ import {
 } from "../../core/homework.js";
 import { render, on, formValues, showFieldErrors, isMobileViewport } from "../dom.js";
 import { openModal, confirmDialog } from "../modal.js";
+import { academicState } from "../semester.js";
 import { importanceChip, stateChip, typeLabel, subjectLabel, subjectOptions, importanceRadios, emptyState, INPUT_CLASS, LABEL_CLASS, CARD_CLASS, PRIMARY_BTN, SECONDARY_BTN } from "../components.js";
 
 const SEGMENT = "px-3 min-h-[44px] text-xs font-semibold rounded-lg transition";
@@ -213,7 +214,7 @@ export function createHomeworkPage(ctx) {
                     </div>
                     <div>
                         <label for="hw-subject" class="${raw(LABEL_CLASS)}">Matière</label>
-                        <select id="hw-subject" name="subjectCode" class="${raw(INPUT_CLASS)}">${subjectOptions(d.subjectCode, { allowNone: true })}</select>
+                        <select id="hw-subject" name="subjectCode" class="${raw(INPUT_CLASS)}">${subjectOptions(d.subjectCode, { allowNone: true, ...academicState(ctx.repo()) })}</select>
                     </div>
                 </div>
                 <div class="grid grid-cols-2 gap-3">

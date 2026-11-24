@@ -13,6 +13,8 @@ test("lien « Aller au contenu » puis navigation dans la barre latérale au cla
     await expect(page.locator('#sidebar-nav a[data-nav="accueil"]')).toBeFocused();
     await page.keyboard.press("Tab");
     await page.keyboard.press("Tab");
+    await expect(page.locator('#sidebar-nav a[data-nav="bilan"]')).toBeFocused();
+    await page.keyboard.press("Tab");
     await page.keyboard.press("Tab");
     await expect(page.locator('#sidebar-nav a[data-nav="devoirs"]')).toBeFocused();
     await page.keyboard.press("Enter");

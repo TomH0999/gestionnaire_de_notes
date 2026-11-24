@@ -63,7 +63,7 @@ test("PWA : l'application se charge hors-ligne après une première visite (tout
     await context.setOffline(true);
     await page.reload();
     await expect(page.locator("html[data-ready=true]")).toHaveCount(1);
-    for (const [hash, title] of [["#/", "Aujourd'hui"], ["#/notes", "Notes & moyennes"], ["#/edt", "Emploi du temps"], ["#/devoirs", "Devoirs & évaluations"], ["#/reglages", "Réglages"]]) {
+    for (const [hash, title] of [["#/", "Aujourd'hui"], ["#/notes", "Notes & moyennes"], ["#/bilan", "Tableau de bord"], ["#/edt", "Emploi du temps"], ["#/devoirs", "Devoirs & évaluations"], ["#/reglages", "Réglages"]]) {
         await goHash(page, hash);
         await expect(page.locator("#page-title")).toHaveText(title);
     }

@@ -11,7 +11,7 @@
  *  - config.js : réseau d'abord (une modification de configuration arrive sans changer VERSION) ;
  *  - Supabase et tout autre domaine : jamais interceptés (données gérées par l'application).
  */
-const VERSION = "2.0.1";
+const VERSION = "2.1.0";
 const CACHE_PREFIX = "gdn-static-";
 const CACHE_NAME = `${CACHE_PREFIX}${VERSION}`;
 // Anciens caches de la version d'origine (même origine, à supprimer) — jamais ceux des autres sites
@@ -36,6 +36,8 @@ const PRECACHE = [
     "./assets/vendor/supabase/supabase.js",
     "./js/main.js",
     "./js/version.js",
+    "./js/core/curriculum.js",
+    "./js/core/curriculum-data.js",
     "./js/core/dates.js",
     "./js/core/edt-url.js",
     "./js/core/escape.js",
@@ -43,6 +45,7 @@ const PRECACHE = [
     "./js/core/homework.js",
     "./js/core/numbers.js",
     "./js/core/program.js",
+    "./js/core/semester-calc.js",
     "./js/core/timetable.js",
     "./js/core/uuid.js",
     "./js/core/validation.js",
@@ -63,8 +66,10 @@ const PRECACHE = [
     "./js/ui/modal.js",
     "./js/ui/popover.js",
     "./js/ui/router.js",
+    "./js/ui/semester.js",
     "./js/ui/sync-indicator.js",
     "./js/ui/toast.js",
+    "./js/ui/pages/dashboard.js",
     "./js/ui/pages/home.js",
     "./js/ui/pages/homework.js",
     "./js/ui/pages/notes.js",

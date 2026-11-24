@@ -14,6 +14,7 @@ import { closePopover } from "./popover.js";
 import { downloadJson } from "./pages/settings.js";
 import { createHomePage } from "./pages/home.js";
 import { createNotesPage } from "./pages/notes.js";
+import { createDashboardPage } from "./pages/dashboard.js";
 import { createTimetablePage } from "./pages/timetable.js";
 import { createHomeworkPage } from "./pages/homework.js";
 import { createSettingsPage } from "./pages/settings.js";
@@ -67,6 +68,7 @@ export function createApp({ store, controller, timetable, version }) {
     const pages = {
         accueil: createHomePage(ctx),
         notes: createNotesPage(ctx),
+        bilan: createDashboardPage(ctx),
         edt: createTimetablePage(ctx),
         devoirs: createHomeworkPage(ctx),
         reglages: createSettingsPage(ctx)
@@ -127,7 +129,7 @@ export function createApp({ store, controller, timetable, version }) {
         } else page.render();
         if (page.onShow) page.onShow();
         document.getElementById("page-title").textContent = route.title;
-        document.title = route.id === "accueil" ? "BUT1 Informatique - Suivi de scolarité" : `${route.title} · BUT1 Informatique`;
+        document.title = route.id === "accueil" ? "BUT Informatique - Suivi de scolarité" : `${route.title} · BUT Informatique`;
         renderNav();
         if (previous) window.scrollTo({ top: 0 });
     }

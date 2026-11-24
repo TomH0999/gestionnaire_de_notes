@@ -73,7 +73,7 @@ describe("Routes", () => {
         expect(routeFromHash("#/edt?x=1").id).toBe("edt");
         expect(routeFromHash("").id).toBe("accueil");
         expect(routeFromHash("#/inconnue").id).toBe("accueil");
-        expect(ROUTES.map((r) => r.id)).toEqual(["accueil", "notes", "edt", "devoirs", "reglages"]);
+        expect(ROUTES.map((r) => r.id)).toEqual(["accueil", "notes", "bilan", "edt", "devoirs", "reglages"]);
     });
 });
 

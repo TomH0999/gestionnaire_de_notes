@@ -7,16 +7,19 @@
  * Le calcul et l'affichage (toFixed(2)) sont strictement ceux d'origine.
  */
 import { html, raw } from "../../core/escape.js";
-import { PROGRAM_S1, isKnownSubject } from "../../core/program.js";
-import { calculateAllAverages, normalizedScore } from "../../core/grades-calc.js";
+import { isKnownSubject } from "../../core/program.js";
+import { normalizedScore } from "../../core/grades-calc.js";
+import { computeSemester } from "../../core/semester-calc.js";
+import { semesterOfSubject, needsParcours } from "../../core/curriculum.js";
 import { validateGradeInput } from "../../core/validation.js";
 import { formatInputNumber } from "../../core/numbers.js";
 import { render, on, formValues, showFieldErrors } from "../dom.js";
 import { attachPopover, closePopover } from "../popover.js";
 import { openModal, confirmDialog } from "../modal.js";
 import { averageBadge, ueCard, ueDetailContent, subjectOptions, INPUT_CLASS, LABEL_CLASS, CARD_CLASS } from "../components.js";
+import { academicState, semesterSwitcher, wireSemesterSwitcher, parcoursNotice, parcoursLabel } from "../semester.js";
 
-export function gradeFormFields(prefix, values = {}) {
+export function gradeFormFields(prefix, values = {}, academic = { semester: 1, parcours: null }) {
     return html`<div class="md:col-span-2">
             <label for="${prefix}-name" class="${raw(LABEL_CLASS)}">Nom de l'évaluation</label>
             <input type="text" id="${prefix}-name" name="name" maxlength="120" autocomplete="off" placeholder="ex: DS1, Contrôle TP, Livrable 1" value="${values.name || ""}" class="${raw(INPUT_CLASS)}">
@@ -24,7 +27,7 @@ export function gradeFormFields(prefix, values = {}) {
         </div>
         <div>
             <label for="${prefix}-subject" class="${raw(LABEL_CLASS)}">Matière / SAÉ</label>
-            <select id="${prefix}-subject" name="subjectCode" class="${raw(INPUT_CLASS)}">${subjectOptions(values.subjectCode || null)}</select>
+            <select id="${prefix}-subject" name="subjectCode" class="${raw(INPUT_CLASS)}">${subjectOptions(values.subjectCode || null, academic)}</select>
             <p data-error-for="subjectCode" class="text-xs text-rose-400 mt-1" hidden></p>
         </div>
         <div class="grid grid-cols-3 gap-2">
@@ -50,16 +53,32 @@ export function createNotesPage(ctx) {
     const openSubjects = new Set();
     let el = null;
     let lastData = null;
+    let shownKey = null; // semestre/parcours du squelette affiché
 
-    function skeleton() {
+    function rangeLabel(list) {
+        return list.length ? (list.length === 1 ? list[0].code : `${list[0].code} à ${list[list.length - 1].code}`) : "";
+    }
+
+    function lastSubjectFor(academic) {
+        const last = ctx.repo().getSetting("lastSubject", null);
+        return last && semesterOfSubject(last) === academic.semester ? last : null;
+    }
+
+    function skeleton(academic, data) {
+        const ressources = data.subjects.filter((x) => x.kind === "ressource");
         return html`<div class="space-y-6">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+                <div data-notes-switcher>${semesterSwitcher(ctx.repo(), { id: "notes-semester" })}</div>
+                <a href="#/bilan" class="text-xs text-brand-400 hover:text-brand-100 min-h-[44px] inline-flex items-center"><i class="fa-solid fa-chart-line mr-1" aria-hidden="true"></i> Tableau de bord</a>
+            </div>
+            ${!data.available ? parcoursNotice(academic.semester) : ""}
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div class="${raw(CARD_CLASS)} relative overflow-hidden flex flex-col justify-between">
                     <div class="absolute -right-6 -top-6 w-32 h-32 bg-brand-600/10 rounded-full blur-2xl pointer-events-none"></div>
                     <div>
                         <div class="flex justify-between items-start mb-2">
                             <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Moyenne Générale</span>
-                            <span id="sem-badge" class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-brand-500/10 text-brand-400 border border-brand-500/20">Semestre 1</span>
+                            <span id="sem-badge" class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-brand-500/10 text-brand-400 border border-brand-500/20">Semestre ${academic.semester}${needsParcours(academic.semester) && academic.parcours ? ` · ${parcoursLabel(academic.parcours)}` : ""}</span>
                         </div>
                         <div class="flex items-baseline space-x-3 my-2">
                             <span id="overall-average" class="text-5xl sm:text-6xl font-extrabold text-white tracking-tight">--</span>
@@ -80,7 +99,7 @@ export function createNotesPage(ctx) {
                             <i class="fa-solid fa-chart-pie text-brand-500" aria-hidden="true"></i> Moyennes des Unités d'Enseignement (UE)
                         </h2>
                     </div>
-                    <div id="ue-averages-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-3"></div>
+                    <div id="ue-averages-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-3"></div>${!data.available ? html`<p class="text-xs text-slate-500">UE affichées dès que le parcours est choisi.</p>` : ""}
                     <p class="text-[11px] text-slate-500 mt-3"><i class="fa-solid fa-hand-pointer" aria-hidden="true"></i> Survolez ou touchez une UE pour voir le détail du calcul.</p>
                 </div>
             </div>
@@ -90,7 +109,7 @@ export function createNotesPage(ctx) {
                     <i class="fa-solid fa-plus-circle text-brand-500" aria-hidden="true"></i> Ajouter une évaluation
                 </h3>
                 <form id="add-grade-form" novalidate class="grid grid-cols-1 md:grid-cols-5 gap-4 items-start">
-                    ${gradeFormFields("grade", { subjectCode: ctx.repo().getSetting("lastSubject", null) })}
+                    ${gradeFormFields("grade", { subjectCode: lastSubjectFor(academic) }, academic)}
                     <div class="md:pt-5">
                         <button type="submit" class="w-full bg-brand-600 hover:bg-brand-500 text-white font-medium py-2 min-h-[44px] rounded-lg text-sm transition shadow-lg shadow-brand-600/20 flex items-center justify-center gap-2">
                             <i class="fa-solid fa-plus" aria-hidden="true"></i> Ajouter
@@ -102,13 +121,13 @@ export function createNotesPage(ctx) {
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div class="${raw(CARD_CLASS)} space-y-4">
                     <h3 class="text-base font-semibold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-book-bookmark text-brand-500" aria-hidden="true"></i> Ressources (Matières R1.01 à R1.12)
+                        <i class="fa-solid fa-book-bookmark text-brand-500" aria-hidden="true"></i> Ressources (${rangeLabel(ressources)})
                     </h3>
                     <div id="ressources-accordion-container" class="space-y-3"></div>
                 </div>
                 <div class="${raw(CARD_CLASS)} space-y-4">
                     <h3 class="text-base font-semibold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-diagram-project text-brand-500" aria-hidden="true"></i> Situations d'Apprentissage et d'Évaluation (SAÉ 1.01 à 1.06)
+                        <i class="fa-solid fa-diagram-project text-brand-500" aria-hidden="true"></i> ${academic.semester === 1 ? "Situations d'Apprentissage et d'Évaluation (SAÉ 1.01 à 1.06)" : `SAÉ, stage et portfolio (S${academic.semester})`}
                     </h3>
                     <div id="saes-list-container" class="space-y-3"></div>
                 </div>
@@ -145,10 +164,33 @@ export function createNotesPage(ctx) {
 
     function renderDynamic() {
         if (!el) return;
-        const grades = ctx.repo().grades();
-        const data = calculateAllAverages(grades);
+        const allGrades = ctx.repo().grades();
+        const academic = academicState(ctx.repo());
+        const data = computeSemester(allGrades, academic.semester, academic.parcours);
+        const grades = allGrades.filter((g) => semesterOfSubject(g.subjectCode) === academic.semester);
         lastData = data;
         closePopover();
+        const key = `${academic.semester}|${academic.parcours}`;
+        if (key !== shownKey || !el.querySelector("#add-grade-form")) {
+            // Changement de semestre : nouveau squelette (la saisie en cours est conservée)
+            const form = el.querySelector("#add-grade-form");
+            const draft = form ? { name: form.elements.name.value, score: form.elements.score.value, max: form.elements.max.value, coeff: form.elements.coeff.value } : null;
+            const focused = document.activeElement && el.contains(document.activeElement) ? document.activeElement : null;
+            const focusSemester = focused && focused.dataset ? focused.dataset.semester : null;
+            render(el, skeleton(academic, data));
+            shownKey = key;
+            if (draft) {
+                const f = el.querySelector("#add-grade-form");
+                for (const [k, v] of Object.entries(draft)) f.elements[k].value = v;
+            }
+            if (focusSemester) {
+                const target = el.querySelector(`[data-action=set-semester][data-semester="${academic.semester}"]`);
+                if (target) target.focus({ preventScroll: true });
+            }
+        } else {
+            const slot = el.querySelector("[data-notes-switcher]");
+            if (slot && !slot.contains(document.activeElement)) render(slot, semesterSwitcher(ctx.repo(), { id: "notes-semester" }));
+        }
 
         const avgDisplay = el.querySelector("#overall-average");
         if (data.globalAverage !== null) {
@@ -164,9 +206,9 @@ export function createNotesPage(ctx) {
         el.querySelector("#total-evals-count").textContent = `${data.totalEvals} évaluation(s) saisie(s)`;
 
         const ueGrid = el.querySelector("#ue-averages-grid");
-        render(ueGrid, html`${PROGRAM_S1.ues.map((ue) => ueCard(ue, data.ueAverages[ue.code]))}`);
+        render(ueGrid, html`${data.ues.map((ue) => ueCard(ue, data.ueAverages[ue.code]))}`);
         for (const btn of ueGrid.querySelectorAll("[data-ue]")) {
-            attachPopover(btn, () => ueDetailContent(lastData.subjectAverages, btn.dataset.ue));
+            attachPopover(btn, () => ueDetailContent(lastData, btn.dataset.ue));
         }
 
         const byCode = new Map();
@@ -177,7 +219,7 @@ export function createNotesPage(ctx) {
 
         render(
             el.querySelector("#ressources-accordion-container"),
-            html`${PROGRAM_S1.ressources.map((res) => {
+            html`${data.subjects.filter((x) => x.kind === "ressource").map((res) => {
                 const list = byCode.get(res.code) || [];
                 return html`<details data-subject="${res.code}" class="bg-slate-950/80 border border-slate-800 rounded-xl overflow-hidden group" ${raw(openSubjects.has(res.code) ? "open" : "")}>
                     <summary class="p-3.5 min-h-[44px] flex items-center justify-between cursor-pointer select-none bg-slate-900/80 hover:bg-slate-800/60 transition gap-2">
@@ -197,7 +239,7 @@ export function createNotesPage(ctx) {
 
         render(
             el.querySelector("#saes-list-container"),
-            html`${PROGRAM_S1.saes.map((sae) => {
+            html`${data.subjects.filter((x) => x.kind !== "ressource").map((sae) => {
                 const list = byCode.get(sae.code) || [];
                 return html`<div data-subject="${sae.code}" class="bg-slate-950/80 border border-slate-800 rounded-xl p-3.5 flex flex-col space-y-2">
                     <div class="flex items-center justify-between gap-2">
@@ -213,7 +255,7 @@ export function createNotesPage(ctx) {
         );
 
         // Notes rattachées à un code inconnu (import) : conservées et visibles, ignorées dans les moyennes (comme avant)
-        const unknown = grades.filter((g) => !isKnownSubject(g.subjectCode));
+        const unknown = allGrades.filter((g) => !isKnownSubject(g.subjectCode));
         let unknownBox = el.querySelector("#unknown-subject-grades");
         if (unknown.length) {
             if (!unknownBox) {
@@ -232,7 +274,7 @@ export function createNotesPage(ctx) {
         openModal({
             title: "Modifier l'évaluation",
             body: html`<form id="edit-grade-form" novalidate class="space-y-4">
-                <div class="space-y-4">${gradeFormFields("edit-grade", { ...g, score: formatInputNumber(g.score), max: formatInputNumber(g.max), coeff: formatInputNumber(g.coeff) })}</div>
+                <div class="space-y-4">${gradeFormFields("edit-grade", { ...g, score: formatInputNumber(g.score), max: formatInputNumber(g.max), coeff: formatInputNumber(g.coeff) }, academicState(ctx.repo()))}</div>
                 <div class="flex items-center justify-end space-x-3 pt-3 border-t border-slate-800">
                     <button type="button" data-modal-close class="px-4 py-2 min-h-[44px] rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition">Annuler</button>
                     <button type="submit" class="px-4 py-2 min-h-[44px] rounded-lg text-xs font-medium bg-brand-600 hover:bg-brand-500 text-white transition shadow-md shadow-brand-600/20">Enregistrer</button>
@@ -279,9 +321,8 @@ export function createNotesPage(ctx) {
         id: "notes",
         mount(container) {
             el = container;
-            render(el, skeleton());
-            const form = el.querySelector("#add-grade-form");
-            form.addEventListener("submit", (event) => {
+            wireSemesterSwitcher(el, ctx.repo());
+            on(el, "submit", "#add-grade-form", (event, form) => {
                 event.preventDefault();
                 const v = validateGradeInput(formValues(form));
                 if (!v.ok) {
@@ -306,7 +347,7 @@ export function createNotesPage(ctx) {
         render: renderDynamic,
         onShow() {
             const sel = el && el.querySelector("#grade-subject");
-            const last = ctx.repo().getSetting("lastSubject", null);
+            const last = lastSubjectFor(academicState(ctx.repo()));
             if (sel && last && document.activeElement !== sel) sel.value = last;
         },
         onHide() {
