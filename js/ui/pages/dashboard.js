@@ -2,7 +2,7 @@
  * Tableau de bord : notes et statistiques par semestre, puis sur toute la scolarité.
  *  1. chiffres clés (moyenne globale, semestres notés, UE à 10 ou plus, évaluations) ;
  *  2. évolution de la moyenne générale de S1 à S6 (barres, seuil de 10) ;
- *  3. moyenne par compétence sur tous les semestres ;
+ *  3. moyenne par UE sur tous les semestres (UE 1 = UE 1.1, 2.1, 3.1…) ;
  *  4. meilleures et moins bonnes matières de toute la scolarité ;
  *  5. détail du semestre choisi (même sélecteur que les autres pages).
  */
@@ -65,7 +65,7 @@ function competenceList(d) {
     return html`<ul class="space-y-3">${d.competences.map(
         (c) => html`<li>
             <div class="flex items-center justify-between gap-2 text-xs">
-                <span class="text-slate-200 min-w-0"><span class="font-semibold text-brand-400">C${c.id}</span> ${c.name}</span>
+                <span class="text-slate-200 min-w-0"><span class="font-semibold text-brand-400">UE ${c.id}</span> ${c.name}</span>
                 <span class="font-mono font-bold shrink-0 ${raw(tone(c.value))}" data-competence="${c.id}">${formatAverage(c.value)}</span>
             </div>
             <div class="mt-1 h-2 rounded-full bg-slate-800 overflow-hidden" aria-hidden="true">
@@ -174,7 +174,7 @@ export function createDashboardPage(ctx) {
                                   ${progressionChart(d)}
                               </section>
                               <section class="${raw(CARD_CLASS)}" aria-labelledby="dash-comp-title">
-                                  <h2 id="dash-comp-title" class="${raw(SECTION_TITLE)} mb-4"><i class="fa-solid fa-layer-group text-brand-500" aria-hidden="true"></i> Moyenne par compétence (UE de tous les semestres)</h2>
+                                  <h2 id="dash-comp-title" class="${raw(SECTION_TITLE)} mb-4"><i class="fa-solid fa-layer-group text-brand-500" aria-hidden="true"></i> Moyenne par UE (tous les semestres)</h2>
                                   ${competenceList(d)}
                               </section>
                           </div>
@@ -198,7 +198,7 @@ export function createDashboardPage(ctx) {
                     </div>
                     ${!current.available && needsParcours(current.semester) ? parcoursNotice(current.semester) : semesterCard(current)}
                 </section>
-                <p class="text-[11px] text-slate-500">Coefficients : ${CURRICULUM_SOURCE}. Moyenne globale = moyenne simple des moyennes de semestre ; moyenne d'une compétence = moyenne simple de ses UE calculées.</p>
+                <p class="text-[11px] text-slate-500">Coefficients : ${CURRICULUM_SOURCE}. Moyenne globale = moyenne simple des moyennes de semestre ; moyenne d'une UE (tous semestres) = moyenne simple des UE de même numéro calculées (UE 1.1, 2.1, 3.1…).</p>
             </div>`
         );
         if (focused) {
