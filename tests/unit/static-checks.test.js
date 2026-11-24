@@ -2,7 +2,6 @@
  * Vérifications statiques du site publié : service worker (logique exécutée dans un
  * environnement simulé), versions, manifest, CSP, absence de secrets, Tailwind à jour.
  */
-import { APP_VERSION } from "../../js/version.js";
 import { describe, it, expect } from "vitest";
 import { readFileSync, existsSync, readdirSync, statSync, mkdtempSync, rmSync } from "node:fs";
 import { execFileSync } from "node:child_process";
